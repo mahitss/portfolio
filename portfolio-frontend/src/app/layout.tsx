@@ -20,7 +20,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Sneha // Portfolio Engine',
+  title: 'Mahit // Portfolio Engine',
   description: 'Full-stack portfolio engineered with Next.js, Express, TypeScript, and interactive React Three Fiber.',
   keywords: ['Full-stack developer', 'WebGL', 'Three.js', 'Next.js', 'Express', 'React Three Fiber', 'TypeScript'],
 };

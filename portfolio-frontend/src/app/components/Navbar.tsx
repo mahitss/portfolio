@@ -22,7 +22,7 @@ export const Navbar: React.FC = () => {
         <Link href="/" className="flex items-center space-x-2 group">
           <div className="w-3 h-3 bg-gradient-to-r from-purple-500 to-cyan-400 rounded-full group-hover:scale-125 transition-transform duration-300 animate-pulse"></div>
           <span className="font-mono text-sm font-bold tracking-[0.25em] text-white">
-            SNEHA<span className="text-cyan-400">.</span>DEV
+            MAHIT<span className="text-cyan-400">.</span>DEV
           </span>
         </Link>
 

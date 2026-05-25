@@ -127,7 +127,7 @@ export default function Contact() {
               <h3 className="font-mono text-xs font-bold uppercase tracking-wider text-slate-300">Direct Pipelines</h3>
               <div className="space-y-3">
                 <a
-                  href="mailto:hello@snehajavadev.com"
+                  href="mailto:hello@mahit.dev"
                   className="flex items-center space-x-3 p-4 rounded-xl glass-panel border-white/5 hover:border-white/15 hover:bg-white/[0.02] transition-all duration-300 group"
                 >
                   <div className="p-2.5 rounded-lg bg-white/5 border border-white/10 group-hover:bg-purple-500/10 group-hover:border-purple-500/20 transition-all">
@@ -135,12 +135,12 @@ export default function Contact() {
                   </div>
                   <div>
                     <p className="font-mono text-[9px] text-slate-500 uppercase tracking-widest">Email Address</p>
-                    <p className="text-xs text-slate-300 font-mono">hello@snehajavadev.com</p>
+                    <p className="text-xs text-slate-300 font-mono">hello@mahit.dev</p>
                   </div>
                 </a>
 
                 <a
-                  href="https://linkedin.com"
+                  href="https://linkedin.com/in/mahitss"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center space-x-3 p-4 rounded-xl glass-panel border-white/5 hover:border-white/15 hover:bg-white/[0.02] transition-all duration-300 group"
@@ -151,13 +151,13 @@ export default function Contact() {
                   <div>
                     <p className="font-mono text-[9px] text-slate-500 uppercase tracking-widest">LinkedIn Profile</p>
                     <p className="text-xs text-slate-300 font-mono flex items-center gap-1">
-                      linkedin.com/in/sneha <ExternalLink size={10} className="text-slate-500" />
+                      linkedin.com/in/mahitss <ExternalLink size={10} className="text-slate-500" />
                     </p>
                   </div>
                 </a>
 
                 <a
-                  href="https://github.com"
+                  href="https://github.com/mahitss"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center space-x-3 p-4 rounded-xl glass-panel border-white/5 hover:border-white/15 hover:bg-white/[0.02] transition-all duration-300 group"
@@ -168,7 +168,7 @@ export default function Contact() {
                   <div>
                     <p className="font-mono text-[9px] text-slate-500 uppercase tracking-widest">GitHub Repository</p>
                     <p className="text-xs text-slate-300 font-mono flex items-center gap-1">
-                      github.com/sneha <ExternalLink size={10} className="text-slate-500" />
+                      github.com/mahitss <ExternalLink size={10} className="text-slate-500" />
                     </p>
                   </div>
                 </a>
