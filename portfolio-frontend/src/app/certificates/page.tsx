@@ -17,28 +17,54 @@ export interface ICertificate {
 // Local fallback certificates data in case backend server is offline
 const LOCAL_BACKUP_CERTIFICATES: ICertificate[] = [
   {
-    id: 'cert-1',
-    name: 'Advanced React & 3D WebGL Development',
-    issuer: 'Metaverse Dev Academy',
-    issueDate: '2026-04-15',
-    imageUrl: '/certs/react_webgl.png',
-    verificationUrl: 'https://credly.com'
+    id: 'cert-gemini',
+    name: 'Google Gemini AI Certification',
+    issuer: 'Google',
+    issueDate: '2026-05-15',
+    imageUrl: '/certs/Gemini google.pdf',
+    verificationUrl: 'https://grow.google'
   },
   {
-    id: 'cert-2',
-    name: 'Cloud Solutions Architect Certification',
-    issuer: 'Apex Cloud Solutions',
+    id: 'cert-hackathon',
+    name: 'Snowflake Hackathon Certification of Excellence',
+    issuer: 'Snowflake',
+    issueDate: '2026-04-30',
+    imageUrl: '/certs/snow hacathon certificate.pdf'
+  },
+  {
+    id: 'cert-ml',
+    name: 'Machine Learning Masterclass',
+    issuer: 'Stanford Online / Coursera',
+    issueDate: '2026-04-12',
+    imageUrl: '/certs/Machine Learning.pdf'
+  },
+  {
+    id: 'cert-ai',
+    name: 'Artificial Intelligence Foundations',
+    issuer: 'IBM',
+    issueDate: '2026-03-20',
+    imageUrl: '/certs/AI.pdf'
+  },
+  {
+    id: 'cert-tata',
+    name: 'Tata Virtual Experience Program',
+    issuer: 'Tata Group',
     issueDate: '2026-02-28',
-    imageUrl: '/certs/cloud_arch.png',
-    verificationUrl: 'https://credly.com'
+    imageUrl: '/certs/tata.pdf'
   },
   {
-    id: 'cert-3',
-    name: 'Full-Stack TypeScript Engineering',
-    issuer: 'Systemic Tech Academy',
-    issueDate: '2025-11-10',
-    imageUrl: '/certs/react_webgl.png',
-    verificationUrl: 'https://credly.com'
+    id: 'cert-cyber',
+    name: 'Cybersecurity Essentials',
+    issuer: 'Cisco Networking Academy',
+    issueDate: '2026-02-10',
+    imageUrl: '/certs/cyber.pdf'
+  },
+  {
+    id: 'cert-data',
+    name: 'Data Analytics Specialization',
+    issuer: 'Google Career Certificates',
+    issueDate: '2026-01-15',
+    imageUrl: '/certs/data analytics.pdf'
   }
 ];
 
@@ -268,26 +294,31 @@ export default function Certificates() {
                       transition={{ duration: 0.4 }}
                       className="space-y-6 flex flex-col h-full"
                     >
-                      {/* Interactive Image Frame */}
+                      {/* Interactive Image Frame / PDF Viewer */}
                       <div className="relative aspect-[4/3] w-full rounded-2xl border border-white/10 bg-black overflow-hidden flex items-center justify-center group shadow-xl">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={selectedCert.imageUrl}
-                          alt={`${selectedCert.name} credential preview`}
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                          onError={(e) => {
-                            // If backend URL fails (e.g. image serve error), load relative backup path
-                            const target = e.target as HTMLImageElement;
-                            if (selectedCert.id === 'cert-1' || selectedCert.id === 'cert-3') {
-                              target.src = '/certs/react_webgl.png';
-                            } else {
-                              target.src = '/certs/cloud_arch.png';
-                            }
-                          }}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                          <span className="font-mono text-[9px] text-slate-300">PREVIEW ZOOM ACTIVE</span>
-                        </div>
+                        {selectedCert.imageUrl.toLowerCase().endsWith('.pdf') ? (
+                          <iframe
+                            src={`${selectedCert.imageUrl}#toolbar=0&navpanes=0`}
+                            className="w-full h-full border-none rounded-xl"
+                            title={`${selectedCert.name} PDF view`}
+                          />
+                        ) : (
+                          <>
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={selectedCert.imageUrl}
+                              alt={`${selectedCert.name} credential preview`}
+                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                              onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.src = '/certs/react_webgl.png';
+                              }}
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                              <span className="font-mono text-[9px] text-slate-300">PREVIEW ZOOM ACTIVE</span>
+                            </div>
+                          </>
+                        )}
                       </div>
 
                       {/* Info & External Link Button */}
@@ -297,7 +328,7 @@ export default function Certificates() {
                           <span className="font-mono text-[10px] text-slate-400">{selectedCert.issuer}</span>
                         </div>
 
-                        {selectedCert.verificationUrl && (
+                        {selectedCert.verificationUrl ? (
                           <a
                             href={selectedCert.verificationUrl}
                             target="_blank"
@@ -308,6 +339,18 @@ export default function Certificates() {
                             <span>Verify Credential</span>
                             <ExternalLink size={12} className="text-slate-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                           </a>
+                        ) : (
+                          selectedCert.imageUrl.toLowerCase().endsWith('.pdf') && (
+                            <a
+                              href={selectedCert.imageUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 text-white font-mono text-xs font-semibold tracking-wide transition-all shadow-md group"
+                            >
+                              <ExternalLink size={12} className="text-cyan-400" />
+                              <span>Open PDF Certificate</span>
+                            </a>
+                          )
                         )}
                       </div>
                     </motion.div>
