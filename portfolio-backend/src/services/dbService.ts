@@ -7,7 +7,7 @@ interface DbSchema {
   messagesCount: number;
 }
 
-const DB_FILE_PATH = path.join(__dirname, '../../database.json');
+const DB_FILE_PATH = process.env.DATABASE_PATH || path.join(__dirname, '../../database.json');
 
 const DEFAULT_DB: DbSchema = {
   pageViews: {
@@ -15,14 +15,20 @@ const DEFAULT_DB: DbSchema = {
     '/experience': 0,
     '/certificates': 0,
     '/contact': 0,
+    '/metrics': 0,
   },
   certificateClicks: {
-    'cert-1': 0,
-    'cert-2': 0,
-    'cert-3': 0,
+    'cert-gemini': 0,
+    'cert-hackathon': 0,
+    'cert-ml': 0,
+    'cert-ai': 0,
+    'cert-tata': 0,
+    'cert-cyber': 0,
+    'cert-data': 0,
   },
   messagesCount: 0,
 };
+
 
 class DbService {
   private static instance: DbService;
