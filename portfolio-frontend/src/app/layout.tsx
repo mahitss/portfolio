@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { Outfit, JetBrains_Mono } from 'next/font/google';
 import { Suspense } from 'react';
 import { Theme3DProvider } from '../context/Theme3DContext';
 import { ThreeBackground } from './components/ThreeBackground';
@@ -8,17 +7,6 @@ import { Navbar } from './components/Navbar';
 import { Loader } from './components/Loader';
 import './globals.css';
 
-const outfit = Outfit({
-  subsets: ['latin'],
-  variable: '--font-outfit',
-  display: 'swap',
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  variable: '--font-mono',
-  display: 'swap',
-});
 
 export const metadata: Metadata = {
   title: 'Mahit // Portfolio Engine',
@@ -32,7 +20,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${outfit.variable} ${jetbrainsMono.variable} scroll-smooth`}>
+    <html lang="en" className="scroll-smooth">
+
       <body className="font-sans antialiased text-white bg-black selection:bg-cyan-500/30 selection:text-cyan-200">
         <Theme3DProvider>
           {/* WebGL Persistent Background Canvas wrapped in a Suspense boundary */}
