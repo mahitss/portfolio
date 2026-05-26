@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mail, Github, Linkedin, Send, CheckCircle2, AlertTriangle, ExternalLink } from 'lucide-react';
+
+import { Mail, Github, Linkedin, Send, CheckCircle2, AlertTriangle, ExternalLink, RefreshCw } from 'lucide-react';
 
 interface FormState {
   name: string;
@@ -14,6 +15,7 @@ interface FormErrors {
   name?: string;
   email?: string;
   message?: string;
+  captcha?: string;
 }
 
 export default function Contact() {
@@ -22,6 +24,13 @@ export default function Contact() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  // CAPTCHA States
+  const [captcha, setCaptcha] = useState<{ question: string; token: string } | null>(null);
+  const [captchaAnswer, setCaptchaAnswer] = useState<string>('');
+  const [captchaLoading, setCaptchaLoading] = useState<boolean>(false);
+
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
 
   // Email regex helper
   const isValidEmail = (email: string): boolean => {
@@ -39,10 +48,32 @@ export default function Contact() {
       tempErrors.email = 'Please enter a valid email address.';
     }
     if (!form.message.trim()) tempErrors.message = 'Message body is required.';
+    
+    if (captcha && !captchaAnswer.trim()) {
+      tempErrors.captcha = 'Security challenge answer is required.';
+    }
 
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
   };
+
+  const fetchCaptcha = useCallback(async () => {
+    setCaptchaLoading(true);
+    try {
+      const res = await fetch(`${backendUrl}/api/captcha`);
+      if (res.ok) {
+        const data = await res.json();
+        setCaptcha(data);
+        setCaptchaAnswer('');
+      } else {
+        console.error('Failed to retrieve CAPTCHA challenge.');
+      }
+    } catch (err) {
+      console.warn('Unable to connect to CAPTCHA generator node:', err);
+    } finally {
+      setCaptchaLoading(false);
+    }
+  }, [backendUrl]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -62,12 +93,16 @@ export default function Contact() {
     setPreviewUrl(null);
 
     try {
-      const res = await fetch('http://localhost:5000/api/contact', {
+      const res = await fetch(`${backendUrl}/api/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          ...form,
+          captchaAnswer,
+          captchaToken: captcha?.token,
+        }),
       });
 
       const data = await res.json();
@@ -75,20 +110,33 @@ export default function Contact() {
       if (res.ok) {
         setStatus('success');
         setForm({ name: '', email: '', message: '' });
+        setCaptchaAnswer('');
         setAlertMessage('Message delivered straight to my inbox!');
         if (data.previewUrl) {
           setPreviewUrl(data.previewUrl);
         }
+        // Load a new challenge
+        fetchCaptcha();
       } else {
         setStatus('error');
         setAlertMessage(data.error || 'Server rejected the message. Please check input parameters.');
+        // Refresh CAPTCHA on error
+        fetchCaptcha();
       }
     } catch (err) {
       console.error('Submission failed:', err);
       setStatus('error');
       setAlertMessage('Unable to connect to Express email node. Server might be offline.');
+      // Refresh CAPTCHA
+      fetchCaptcha();
     }
   };
+
+  // Initial load
+  useEffect(() => {
+    fetchCaptcha();
+  }, [fetchCaptcha]);
+
 
   // Auto-clear alert messages after 5 seconds
   useEffect(() => {
@@ -99,7 +147,7 @@ export default function Contact() {
           setStatus('idle');
           setPreviewUrl(null);
         }
-      }, 5000);
+      }, 5500);
       return () => clearTimeout(timer);
     }
   }, [status]);
@@ -283,6 +331,49 @@ export default function Contact() {
                   {errors.message && <p className="font-mono text-[10px] text-rose-500">{errors.message}</p>}
                 </div>
 
+                {/* Dynamic Cryptographic CAPTCHA */}
+                {captcha && (
+                  <div className="space-y-1.5">
+                    <label htmlFor="captchaAnswer" className="font-mono text-[10px] uppercase text-slate-400 block tracking-widest flex items-center justify-between">
+                      <span>Security Verification</span>
+                      {captchaLoading ? (
+                        <RefreshCw className="animate-spin text-purple-400" size={10} />
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={fetchCaptcha}
+                          className="text-purple-400 hover:text-purple-300 transition-colors lowercase text-[9px] hover:underline"
+                        >
+                          refresh challenge
+                        </button>
+                      )}
+                    </label>
+                    <div className="flex gap-3">
+                      <div className="flex-1 bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-xs text-slate-400 font-mono flex items-center select-none">
+                        {captcha.question}
+                      </div>
+                      <input
+                        type="text"
+                        id="captchaAnswer"
+                        name="captchaAnswer"
+                        value={captchaAnswer}
+                        onChange={(e) => {
+                          setCaptchaAnswer(e.target.value);
+                          if (errors.captcha) {
+                            setErrors((prev) => ({ ...prev, captcha: undefined }));
+                          }
+                        }}
+                        disabled={status === 'sending'}
+                        className={`w-28 bg-black/40 border rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-purple-500 font-mono text-center transition-all ${
+                          errors.captcha ? 'border-rose-500/50' : 'border-white/10 hover:border-white/20'
+                        }`}
+                        placeholder="Answer"
+                      />
+                    </div>
+                    {errors.captcha && <p className="font-mono text-[10px] text-rose-500">{errors.captcha}</p>}
+                  </div>
+                )}
+
                 {/* Submit Button */}
                 <button
                   type="submit"
@@ -316,3 +407,4 @@ export default function Contact() {
     </div>
   );
 }
+

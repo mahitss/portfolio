@@ -8,7 +8,7 @@ import { Palette, Sparkles, Settings, Github, Linkedin } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const pathname = usePathname();
-  const { colorTheme, setColorTheme, motionMode, setMotionMode, apiStatus, checkApiStatus } = useTheme3D();
+  const { colorTheme, setColorTheme, motionMode, setMotionMode, apiStatus, checkApiStatus, apiLatency, apiUptime } = useTheme3D();
   const [showControls, setShowControls] = useState(false);
 
   // Helper to determine if a route is active
@@ -33,6 +33,7 @@ export const Navbar: React.FC = () => {
             { name: 'Experience', path: '/experience' },
             { name: 'Certificates', path: '/certificates' },
             { name: 'Contact', path: '/contact' },
+            { name: 'Metrics', path: '/metrics' },
           ].map((link) => (
             <Link
               key={link.path}
@@ -47,6 +48,7 @@ export const Navbar: React.FC = () => {
             </Link>
           ))}
         </nav>
+
 
         {/* Right side widgets: Status, Theme Controls, and Links */}
         <div className="flex items-center space-x-3">
@@ -66,7 +68,13 @@ export const Navbar: React.FC = () => {
               }`}></span>
             </span>
             <span className="font-mono text-[10px] text-slate-400 select-none hidden lg:inline">
-              Express API: {apiStatus === 'operational' ? 'Operational' : apiStatus === 'checking' ? 'Checking...' : 'Offline'}
+              Express API: {
+                apiStatus === 'operational'
+                  ? `Operational (Ping: ${apiLatency !== null ? `${apiLatency}ms` : '--'} | Uptime: ${apiUptime || '--'})`
+                  : apiStatus === 'checking'
+                  ? 'Checking...'
+                  : 'Offline'
+              }
             </span>
           </div>
 
@@ -86,7 +94,7 @@ export const Navbar: React.FC = () => {
           {/* Social Quick Links */}
           <div className="hidden sm:flex items-center space-x-2 border-l border-white/10 pl-3">
             <a
-              href="https://github.com"
+              href="https://github.com/mahitss"
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 text-slate-400 hover:text-white transition-colors duration-300"
@@ -94,7 +102,7 @@ export const Navbar: React.FC = () => {
               <Github size={16} />
             </a>
             <a
-              href="https://linkedin.com"
+              href="https://linkedin.com/in/mahitss"
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 text-slate-400 hover:text-white transition-colors duration-300"
@@ -175,6 +183,7 @@ export const Navbar: React.FC = () => {
           { name: 'Experience', path: '/experience' },
           { name: 'Certificates', path: '/certificates' },
           { name: 'Contact', path: '/contact' },
+          { name: 'Metrics', path: '/metrics' },
         ].map((link) => (
           <Link
             key={link.path}
@@ -189,6 +198,7 @@ export const Navbar: React.FC = () => {
           </Link>
         ))}
       </div>
+
     </header>
   );
 };

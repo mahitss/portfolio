@@ -11,25 +11,61 @@ import * as THREE from 'three';
 const InteractiveScene: React.FC = () => {
   const pointsRef = useRef<THREE.Points>(null);
   const pathname = usePathname();
-  const { colorTheme, motionMode } = useTheme3D();
+  const { colorTheme, motionMode, geometryType, rotationSpeed } = useTheme3D();
   const { viewport } = useThree();
 
   const particleCount = 2000;
 
-  // Generate initial particle positions (spherical distribution)
-  const positions = useMemo(() => {
-    const arr = new Float32Array(particleCount * 3);
+  // 1. Generate Static Positions for all 4 shapes once
+  const geometries = useMemo(() => {
+    const sphere = new Float32Array(particleCount * 3);
+    const cube = new Float32Array(particleCount * 3);
+    const torus = new Float32Array(particleCount * 3);
+    const plane = new Float32Array(particleCount * 3);
+
     for (let i = 0; i < particleCount; i++) {
+      // --- Sphere ---
       const theta = THREE.MathUtils.randFloat(0, Math.PI * 2);
       const phi = Math.acos(THREE.MathUtils.randFloat(-1, 1));
-      const distance = THREE.MathUtils.randFloat(1.2, 1.8);
+      const distSphere = THREE.MathUtils.randFloat(1.2, 1.8);
+      sphere[i * 3] = distSphere * Math.sin(phi) * Math.cos(theta);
+      sphere[i * 3 + 1] = distSphere * Math.sin(phi) * Math.sin(theta);
+      sphere[i * 3 + 2] = distSphere * Math.cos(phi);
 
-      arr[i * 3] = distance * Math.sin(phi) * Math.cos(theta);
-      arr[i * 3 + 1] = distance * Math.sin(phi) * Math.sin(theta);
-      arr[i * 3 + 2] = distance * Math.cos(phi);
+      // --- Cube ---
+      const face = THREE.MathUtils.randInt(1, 6);
+      const size = 1.3;
+      const r1 = THREE.MathUtils.randFloat(-size, size);
+      const r2 = THREE.MathUtils.randFloat(-size, size);
+      if (face === 1) { cube[i * 3] = size; cube[i * 3 + 1] = r1; cube[i * 3 + 2] = r2; }
+      else if (face === 2) { cube[i * 3] = -size; cube[i * 3 + 1] = r1; cube[i * 3 + 2] = r2; }
+      else if (face === 3) { cube[i * 3] = r1; cube[i * 3 + 1] = size; cube[i * 3 + 2] = r2; }
+      else if (face === 4) { cube[i * 3] = r1; cube[i * 3 + 1] = -size; cube[i * 3 + 2] = r2; }
+      else if (face === 5) { cube[i * 3] = r1; cube[i * 3 + 1] = r2; cube[i * 3 + 2] = size; }
+      else { cube[i * 3] = r1; cube[i * 3 + 1] = r2; cube[i * 3 + 2] = -size; }
+
+      // --- Torus ---
+      const u = THREE.MathUtils.randFloat(0, Math.PI * 2);
+      const v = THREE.MathUtils.randFloat(0, Math.PI * 2);
+      const R = 1.2;
+      const r = 0.45;
+      torus[i * 3] = (R + r * Math.cos(v)) * Math.cos(u);
+      torus[i * 3 + 1] = (R + r * Math.cos(v)) * Math.sin(u);
+      torus[i * 3 + 2] = r * Math.sin(v);
+
+      // --- Plane ---
+      plane[i * 3] = THREE.MathUtils.randFloat(-1.8, 1.8);
+      plane[i * 3 + 1] = THREE.MathUtils.randFloat(-1.8, 1.8);
+      plane[i * 3 + 2] = THREE.MathUtils.randFloat(-0.25, 0.25);
     }
-    return arr;
+
+    return { sphere, cube, torus, plane };
   }, []);
+
+  // 2. Buffer to hold the active rendering positions (starts as sphere)
+  const currentPositions = useMemo(() => {
+    return new Float32Array(geometries.sphere);
+  }, [geometries]);
 
   // Compute color values based on selected theme
   const particleColors = useMemo(() => {
@@ -37,19 +73,16 @@ const InteractiveScene: React.FC = () => {
     for (let i = 0; i < particleCount; i++) {
       let r = 1, g = 1, b = 1;
       if (colorTheme === 'purple-cyan') {
-        // Blends between bright purple and cyan
         const factor = Math.random();
         r = THREE.MathUtils.lerp(0.65, 0.1, factor);
         g = THREE.MathUtils.lerp(0.2, 0.8, factor);
         b = THREE.MathUtils.lerp(0.9, 0.95, factor);
       } else if (colorTheme === 'emerald') {
-        // Blends between mint green and deep emerald
         const factor = Math.random();
         r = THREE.MathUtils.lerp(0.05, 0.2, factor);
         g = THREE.MathUtils.lerp(0.9, 0.6, factor);
         b = THREE.MathUtils.lerp(0.5, 0.4, factor);
       } else {
-        // Sunset: Orange/Gold to magenta
         const factor = Math.random();
         r = THREE.MathUtils.lerp(0.95, 0.9, factor);
         g = THREE.MathUtils.lerp(0.6, 0.1, factor);
@@ -62,9 +95,8 @@ const InteractiveScene: React.FC = () => {
     return colors;
   }, [colorTheme]);
 
-  // Target spatial states to transition towards
+  // Target spatial states to transition towards based on route
   const layout = useMemo(() => {
-    // Dynamic positions based on current path
     if (pathname === '/') {
       return {
         position: new THREE.Vector3(0, 0, 0),
@@ -72,16 +104,14 @@ const InteractiveScene: React.FC = () => {
         rotationSpeed: 0.15,
       };
     } else if (pathname === '/experience' || pathname === '/certificates') {
-      // Scale down and shift to the right hemisphere
-      const xOffset = viewport.width > 7 ? 2.2 : 0; // Center if small screen but not mobile
+      const xOffset = viewport.width > 7 ? 2.2 : 0;
       const yOffset = viewport.width > 7 ? 0 : -1.2;
       return {
         position: new THREE.Vector3(xOffset, yOffset, -0.5),
         scale: 0.75,
         rotationSpeed: 0.05,
       };
-    } else if (pathname === '/contact') {
-      // Scale up, push back, slow ambient glow
+    } else if (pathname === '/contact' || pathname === '/metrics') {
       return {
         position: new THREE.Vector3(0, -0.2, -1.5),
         scale: 2.2,
@@ -112,49 +142,71 @@ const InteractiveScene: React.FC = () => {
 
     const time = state.clock.getElapsedTime();
 
-    // 1. Lerp position and scale towards route targets
+    // 1. Lerp layout position and scale towards route targets
     pointsRef.current.position.lerp(layout.position, 0.05);
     
-    // Ambient pulsation scale modifier for contact page, standard lerp for others
-    const pulseFactor = pathname === '/contact' ? Math.sin(time * 1.5) * 0.15 : 0;
+    const isContactOrMetrics = pathname === '/contact' || pathname === '/metrics';
+    const pulseFactor = isContactOrMetrics ? Math.sin(time * 1.5) * 0.15 : 0;
     const targetScale = layout.scale + pulseFactor;
     pointsRef.current.scale.setScalar(THREE.MathUtils.lerp(pointsRef.current.scale.x, targetScale, 0.05));
 
     // 2. Perform rotation and mode-based deformation
-    const baseRotationY = time * layout.rotationSpeed;
+    // Multiplied by rotationSpeed modifier (from "God Mode" dock)
+    const baseRotationY = time * layout.rotationSpeed * rotationSpeed;
     const parallaxX = mouse.current.x * 0.2;
     const parallaxY = mouse.current.y * 0.2;
 
     pointsRef.current.rotation.y = baseRotationY + parallaxX;
     pointsRef.current.rotation.x = parallaxY;
 
-    // Explode vs Orbit animation behavior
+    // 3. Select active geometry positions array
+    let targetPositions = geometries.sphere;
+    if (geometryType === 'cube') targetPositions = geometries.cube;
+    else if (geometryType === 'torus') targetPositions = geometries.torus;
+    else if (geometryType === 'plane') targetPositions = geometries.plane;
+
     const geometry = pointsRef.current.geometry;
     const positionAttribute = geometry.attributes.position;
-    const originalPos = positions;
+    
+    // 4. Smoothly morph (lerp) individual particle positions
+    const morphSpeed = 0.06;
+    for (let i = 0; i < particleCount; i++) {
+      const idx = i * 3;
+      
+      // Current particle positions
+      let currentX = currentPositions[idx];
+      let currentY = currentPositions[idx + 1];
+      let currentZ = currentPositions[idx + 2];
 
-    if (motionMode === 'explode') {
-      // Push particles outward dynamically based on time-sine wave
-      const explodeFactor = Math.sin(time * 2.0) * 0.4 + 1.2;
-      for (let i = 0; i < particleCount; i++) {
-        positionAttribute.setX(i, originalPos[i * 3] * explodeFactor);
-        positionAttribute.setY(i, originalPos[i * 3 + 1] * explodeFactor);
-        positionAttribute.setZ(i, originalPos[i * 3 + 2] * explodeFactor);
-      }
-    } else {
-      // Standard morphing orb deformation
-      const pulseSpeed = 1.5;
-      const waveAmt = 0.08;
-      for (let i = 0; i < particleCount; i++) {
-        const x = originalPos[i * 3];
-        const y = originalPos[i * 3 + 1];
-        const z = originalPos[i * 3 + 2];
+      // Target positions from active geometry
+      const tx = targetPositions[idx];
+      const ty = targetPositions[idx + 1];
+      const tz = targetPositions[idx + 2];
 
-        // Complex noise simulation
-        const factor = Math.sin(x * 2 + time * pulseSpeed) * Math.cos(y * 2 + time * pulseSpeed) * waveAmt;
-        positionAttribute.setX(i, x + (x / 1.5) * factor);
-        positionAttribute.setY(i, y + (y / 1.5) * factor);
-        positionAttribute.setZ(i, z + (z / 1.5) * factor);
+      // Interpolate
+      currentX += (tx - currentX) * morphSpeed;
+      currentY += (ty - currentY) * morphSpeed;
+      currentZ += (tz - currentZ) * morphSpeed;
+
+      // Save back to tracking buffer
+      currentPositions[idx] = currentX;
+      currentPositions[idx + 1] = currentY;
+      currentPositions[idx + 2] = currentZ;
+
+      // Add deformation wave if mode is orbit, else blow out if explode
+      if (motionMode === 'explode') {
+        const explodeFactor = Math.sin(time * 2.0) * 0.4 + 1.2;
+        positionAttribute.setX(i, currentX * explodeFactor);
+        positionAttribute.setY(i, currentY * explodeFactor);
+        positionAttribute.setZ(i, currentZ * explodeFactor);
+      } else {
+        const pulseSpeed = 1.5;
+        const waveAmt = 0.08;
+        const factor = Math.sin(currentX * 2 + time * pulseSpeed) * Math.cos(currentY * 2 + time * pulseSpeed) * waveAmt;
+        
+        positionAttribute.setX(i, currentX + (currentX / 1.5) * factor);
+        positionAttribute.setY(i, currentY + (currentY / 1.5) * factor);
+        positionAttribute.setZ(i, currentZ + (currentZ / 1.5) * factor);
       }
     }
     positionAttribute.needsUpdate = true;
@@ -165,7 +217,7 @@ const InteractiveScene: React.FC = () => {
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
-          args={[positions, 3]}
+          args={[currentPositions, 3]}
         />
         <bufferAttribute
           attach="attributes-color"
@@ -186,6 +238,24 @@ const InteractiveScene: React.FC = () => {
 
 export const ThreeBackground: React.FC = () => {
   const [isMobile, setIsMobile] = useState<boolean | null>(null);
+  const pathname = usePathname();
+
+  // Record page view on path change
+  useEffect(() => {
+    const recordPageView = async () => {
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+      try {
+        await fetch(`${backendUrl}/api/analytics/pageview`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ path: pathname }),
+        });
+      } catch (err) {
+        console.warn('[Analytics] Failed to record page view:', err);
+      }
+    };
+    recordPageView();
+  }, [pathname]);
 
   // Viewport breakpoint checker
   useEffect(() => {

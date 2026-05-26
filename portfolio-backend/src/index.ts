@@ -3,8 +3,12 @@ import cors from 'cors';
 import helmet from 'helmet';
 import path from 'path';
 import dotenv from 'dotenv';
+import rateLimit from 'express-rate-limit';
 import { getCertificates } from './controllers/certificateController';
 import { handleContactForm } from './controllers/contactController';
+import { getHealthStatus } from './controllers/healthController';
+import { generateCaptcha } from './controllers/captchaController';
+import { recordPageView, recordCertificateClick, getMetrics } from './controllers/analyticsController';
 
 // Load environment variables
 dotenv.config();
@@ -39,14 +43,28 @@ app.use(express.json());
 // Serve static images folder
 app.use('/images', express.static(path.join(__dirname, '../public/images')));
 
+// Rate Limiter for Contact Form Submissions (5 attempts per 15 minutes)
+const contactLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5,
+  message: { error: 'Too many contact form submissions from this IP. Please try again after 15 minutes.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 // API Routes
 app.get('/api/certificates', getCertificates);
-app.post('/api/contact', handleContactForm);
+app.post('/api/contact', contactLimiter, handleContactForm);
+app.get('/api/captcha', generateCaptcha);
 
-// Basic health check route
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'UP', timestamp: new Date() });
-});
+// System Monitor Health check endpoints
+app.get('/api/health', getHealthStatus);
+app.get('/health', getHealthStatus); // Alias for compatibility with root layout pings
+
+// Analytics Metrics endpoints
+app.post('/api/analytics/pageview', recordPageView);
+app.post('/api/analytics/certificate-click', recordCertificateClick);
+app.get('/api/analytics/metrics', getMetrics);
 
 // Global Error Handler
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {

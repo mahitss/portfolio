@@ -3,6 +3,7 @@ import { Outfit, JetBrains_Mono } from 'next/font/google';
 import { Suspense } from 'react';
 import { Theme3DProvider } from '../context/Theme3DContext';
 import { ThreeBackground } from './components/ThreeBackground';
+import { ThemeController } from './components/ThemeController';
 import { Navbar } from './components/Navbar';
 import { Loader } from './components/Loader';
 import './globals.css';
@@ -45,6 +46,8 @@ export default function RootLayout({
             <main className="flex-grow relative z-10 w-full">
               {children}
             </main>
+            {/* Floating 3D God Mode Controls Dock */}
+            <ThemeController />
           </div>
         </Theme3DProvider>
       </body>

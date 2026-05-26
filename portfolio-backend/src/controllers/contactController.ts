@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import nodemailer from 'nodemailer';
+import { verifyCaptcha } from './captchaController';
+import { db } from '../services/dbService';
 
 // Helper to validate email structure
 const isValidEmail = (email: string): boolean => {
@@ -8,7 +10,7 @@ const isValidEmail = (email: string): boolean => {
 };
 
 export const handleContactForm = async (req: Request, res: Response) => {
-  const { name, email, message } = req.body;
+  const { name, email, message, captchaAnswer, captchaToken } = req.body;
 
   // 1. Validation Layer
   if (!name || typeof name !== 'string' || name.trim() === '') {
@@ -21,6 +23,11 @@ export const handleContactForm = async (req: Request, res: Response) => {
 
   if (!message || typeof message !== 'string' || message.trim() === '') {
     return res.status(400).json({ error: 'Message is required and must be a non-empty string.' });
+  }
+
+  // 2. CAPTCHA Security Layer
+  if (!captchaAnswer || !captchaToken || !verifyCaptcha(captchaAnswer, captchaToken)) {
+    return res.status(400).json({ error: 'Security challenge failed. Please solve the arithmetic question again.' });
   }
 
   try {
@@ -75,6 +82,9 @@ Message: ${message}`,
     };
 
     const info = await transporter.sendMail(mailOptions);
+
+    // Increment successfully sent messages counter in our analytics database
+    await db.incrementMessagesCount();
 
     // If using ethereal, output preview URL
     if (!process.env.SMTP_HOST) {
