@@ -1,9 +1,14 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import { gsap } from 'gsap';
 
-const NAV_LINKS = ['Gallery', 'Styles', 'API', 'Pricing', 'Blog'];
+const NAV_LINKS = [
+  { name: 'Experience', path: '/experience' },
+  { name: 'Certificates', path: '/certificates' },
+  { name: 'Metrics', path: '/metrics' }
+];
 const VIDEO_SRC = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260511_080827_a9e5ad52-b6ee-4e79-b393-d936f179cfd7.mp4';
 
 const LogoMark: React.FC = () => (
@@ -227,36 +232,41 @@ export default function Home() {
         }`}
         style={{ top: '126px' }}
       >
-        <h1 className="hero-title select-none">MicroVisuals</h1>
+        <h1 className="hero-title select-none">MAHIT</h1>
       </div>
 
       {/* 3. Nav */}
       <nav className="fixed top-5 left-1/2 -translate-x-1/2 z-50 whitespace-nowrap">
         <div className="liquid-glass flex items-center gap-6 rounded px-4 py-2.5">
-          <LogoMark />
+          <Link href="/" className="flex items-center">
+            <LogoMark />
+          </Link>
           <div className="flex items-center gap-5">
             {NAV_LINKS.map((link) => (
-              <a
-                key={link}
-                href="#"
+              <Link
+                key={link.name}
+                href={link.path}
                 className="text-sm font-body font-light text-white/70 hover:text-white transition-colors duration-200"
               >
-                {link}
-              </a>
+                {link.name}
+              </Link>
             ))}
           </div>
           <div className="flex items-center gap-3 ml-4">
             <a
-              href="#"
+              href="https://github.com/mahitss"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-sm font-body font-light text-white/70 hover:text-white transition-colors duration-200"
             >
-              Sign in
+              GitHub
             </a>
-            <button
+            <Link
+              href="/contact"
               className="liquid-glass-strong text-sm font-body font-medium text-white rounded px-4 py-1.5 transition-all duration-200 hover:scale-[1.04] hover:shadow-[0_0_16px_2px_rgba(255,255,255,0.12)] active:scale-[0.97]"
             >
-              Try it free
-            </button>
+              Contact Me
+            </Link>
           </div>
         </div>
       </nav>
@@ -268,25 +278,27 @@ export default function Home() {
         }`}
       >
         <p className="text-sm font-body font-light text-white/75 max-w-[220px] leading-relaxed">
-          Forma&apos;s AI understands context, composition, and style like a creative director would.
+          Engineering decoupled systems, WebGL interfaces, and high-performance APIs with a focus on clean design.
         </p>
 
         <div className="absolute left-1/2 -translate-x-1/2 bottom-0 flex items-center gap-3">
-          <button
-            className="group relative bg-white text-black text-sm font-body font-medium rounded px-6 py-3 overflow-hidden active:scale-[0.97] transition-all duration-200 shadow-[0_0_0_0_rgba(255,255,255,0)] hover:shadow-[0_0_24px_4px_rgba(255,255,255,0.25)] hover:scale-[1.03]"
+          <Link
+            href="/experience"
+            className="group relative bg-white text-black text-sm font-body font-medium rounded px-6 py-3 overflow-hidden active:scale-[0.97] transition-all duration-200 shadow-[0_0_0_0_rgba(255,255,255,0)] hover:shadow-[0_0_24px_4px_rgba(255,255,255,0.25)] hover:scale-[1.03] inline-block"
           >
-            <span className="relative z-10">Start generating</span>
+            <span className="relative z-10">Explore Experience</span>
             <span className="absolute inset-0 bg-gradient-to-b from-white to-white/85 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-          </button>
-          <button
-            className="liquid-glass group text-white text-sm font-body font-medium rounded px-6 py-3 active:scale-[0.97] transition-all duration-200 hover:scale-[1.03] hover:shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_0_20px_2px_rgba(255,255,255,0.07)]"
+          </Link>
+          <Link
+            href="/certificates"
+            className="liquid-glass group text-white text-sm font-body font-medium rounded px-6 py-3 active:scale-[0.97] transition-all duration-200 hover:scale-[1.03] hover:shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_0_20px_2px_rgba(255,255,255,0.07)] inline-block"
           >
-            See templates
-          </button>
+            View Credentials
+          </Link>
         </div>
 
         <p className="text-sm font-body font-light text-white/75 max-w-[220px] leading-relaxed text-right">
-          Describe what you see in your head — get images that actually match.
+          Bringing abstract concepts into production — pixel-perfect frontends backed by rock-solid backend servers.
         </p>
       </div>
     </div>
