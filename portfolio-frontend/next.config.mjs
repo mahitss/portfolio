@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {};
 
-// Trigger fresh Vercel build with updated root directory settings
+// Force Vercel build #2 with saved root directory settings
 export default nextConfig;
