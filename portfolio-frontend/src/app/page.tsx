@@ -1,157 +1,165 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import { ChevronDown, Infinity, Menu, X } from 'lucide-react';
+import { motion } from 'framer-motion';
 
-const BG_VIDEO = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260511_230229_7c9bc431-46cf-489a-948d-e8144d8eb5d4.mp4';
+const VIDEO_SRC = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260418_063509_7d167302-4fd4-480b-8260-18ab572333d4.mp4';
 
 export default function Home() {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.1,
+      },
+    },
+  };
 
-  const navLinks = [
-    { label: 'Home', path: '/', active: true },
-    { label: 'Experience', path: '/experience' },
-    { label: 'Certificates', path: '/certificates' },
-    { label: 'Metrics', path: '/metrics', dropdown: true }
-  ];
+  const fadeUp = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as const },
+    },
+  };
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-black">
-      {/* Background looping video */}
+    <section className="relative h-screen w-full overflow-hidden bg-black select-none">
+      {/* Background Video */}
       <video
-        className="absolute top-0 left-0 w-full h-full object-cover z-0"
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
         autoPlay
-        muted
         loop
+        muted
         playsInline
-        src={BG_VIDEO}
+        src={VIDEO_SRC}
       />
 
-      {/* Background dim overlay for text readability */}
-      <div className="absolute inset-0 bg-black/20 z-10 pointer-events-none" />
+      {/* Background Overlay */}
+      <div className="absolute inset-0 bg-black/40 pointer-events-none z-10" />
 
-      {/* Navbar */}
-      <nav className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-5 sm:px-8 py-5">
-        {/* Logo (left) */}
-        <Link href="/" className="flex items-center gap-2 text-white font-medium text-base z-30">
-          <Infinity size={22} strokeWidth={1.5} />
-          <span>MAHIT</span>
-        </Link>
+      {/* Floating Pill Navbar */}
+      <motion.nav 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
+        className="absolute top-0 left-0 right-0 z-20 px-6 md:px-10 pt-6 flex items-center justify-between gap-4"
+      >
+        {/* Brand logo pill */}
+        <div className="flex items-center gap-2 bg-neutral-900/90 backdrop-blur rounded-full pl-4 pr-6 py-3 border border-white/5">
+          <svg viewBox="0 0 256 256" className="h-5 w-5 fill-white">
+            <path d="M 128 192 L 128 256 L 64.5 256 L 32 223 L 0 192 L 0 128 L 64 128 Z M 256 192 L 256 256 L 192.5 256 L 160 223 L 128 192 L 128 128 L 192 128 Z M 128 64 L 128 128 L 64.5 128 L 32 95 L 0 64 L 0 0 L 64 0 Z M 256 64 L 256 128 L 192.5 128 L 160 95 L 128 64 L 128 0 L 192 0 Z" />
+          </svg>
+          <span className="text-white text-sm font-normal tracking-tight lowercase">mahit</span>
+        </div>
 
-        {/* Nav pill (center) */}
-        <div className="liquid-glass hidden md:flex items-center gap-1 rounded-xl px-2 py-2">
-          {navLinks.map((link) => (
+        {/* Links center pill */}
+        <div className="hidden md:flex items-center gap-1 bg-neutral-900/90 backdrop-blur rounded-full px-3 py-2 border border-white/5">
+          {[
+            { label: 'experience', path: '/experience' },
+            { label: 'certificates', path: '/certificates' },
+            { label: 'contact', path: '/contact' },
+            { label: 'metrics', path: '/metrics' },
+          ].map((link) => (
             <Link
               key={link.label}
               href={link.path}
-              className={`flex items-center gap-0.5 px-3 py-1.5 rounded-md text-sm transition-colors ${
-                link.active
-                  ? 'bg-white/15 text-white'
-                  : 'text-white/70 hover:text-white'
-              }`}
+              className="text-neutral-300 hover:text-white transition-colors text-sm px-5 py-2 rounded-full lowercase"
             >
-              <span>{link.label}</span>
-              {link.dropdown && <ChevronDown size={13} className="mt-px" />}
+              {link.label}
             </Link>
           ))}
         </div>
 
-        {/* CTAs (right) */}
-        <div className="hidden md:flex items-center gap-3">
-          <a
-            href="https://github.com/mahitss"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="liquid-glass text-white text-sm font-medium px-4 py-2.5 rounded-full hover:bg-white/5 transition-colors"
-          >
-            GitHub
-          </a>
-          <Link
-            href="/contact"
-            className="bg-white text-black text-sm font-medium px-4 py-2.5 rounded-full hover:bg-white/90 transition-colors"
-          >
-            Contact Me
-          </Link>
-        </div>
-
-        {/* Mobile Toggle */}
-        <button
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="liquid-glass text-white p-2 rounded-lg md:hidden z-30"
-          aria-label="Toggle navigation menu"
+        {/* Right CTA button */}
+        <Link
+          href="/contact"
+          className="bg-white text-black text-sm font-normal rounded-full px-6 py-3 hover:bg-neutral-200 transition-colors lowercase"
         >
-          {menuOpen ? <X size={18} /> : <Menu size={18} />}
-        </button>
-      </nav>
+          contact me
+        </Link>
+      </motion.nav>
 
-      {/* Mobile menu */}
-      {menuOpen && (
-        <div className="absolute top-[72px] left-4 right-4 z-30 md:hidden liquid-glass rounded-2xl p-4 flex flex-col gap-1">
-          {navLinks.map((link) => (
-            <Link
-              key={link.label}
-              href={link.path}
-              onClick={() => setMenuOpen(false)}
-              className={`flex items-center justify-between w-full px-4 py-3 rounded-lg text-sm transition-colors ${
-                link.active
-                  ? 'bg-white/15 text-white'
-                  : 'text-white/70 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              <span>{link.label}</span>
-              {link.dropdown && <ChevronDown size={13} />}
-            </Link>
-          ))}
+      {/* Foreground Interactive Content */}
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="relative h-full w-full z-10 pointer-events-none"
+      >
+        {/* Giant Staggered Typography Headlines */}
+        <motion.h1 
+          variants={fadeUp}
+          className="hero-title absolute text-white font-medium text-[14vw] md:text-[13vw] left-4 md:left-10 top-[18%]"
+        >
+          Build.
+        </motion.h1>
 
-          {/* Mobile CTA row */}
-          <div className="flex gap-2 mt-2 pt-3 border-t border-white/10">
-            <a
-              href="https://github.com/mahitss"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setMenuOpen(false)}
-              className="flex-1 text-center liquid-glass text-white text-sm font-medium px-4 py-2.5 rounded-full hover:bg-white/5 transition-colors"
-            >
-              GitHub
-            </a>
-            <Link
-              href="/contact"
-              onClick={() => setMenuOpen(false)}
-              className="flex-1 text-center bg-white text-black text-sm font-medium px-4 py-2.5 rounded-full hover:bg-white/90 transition-colors"
-            >
-              Contact Me
-            </Link>
+        <motion.h1 
+          variants={fadeUp}
+          className="hero-title absolute text-white font-medium text-[14vw] md:text-[13vw] right-4 md:right-10 top-[38%]"
+        >
+          Scale.
+        </motion.h1>
+
+        <motion.h1 
+          variants={fadeUp}
+          className="hero-title absolute text-white font-medium text-[14vw] md:text-[13vw] left-[18%] md:left-[28%] top-[58%]"
+        >
+          Automate.
+        </motion.h1>
+
+        {/* Description Paragraph */}
+        <motion.p 
+          variants={fadeUp}
+          className="absolute left-6 md:left-10 top-[46%] max-w-[240px] text-[15px] leading-snug text-white/90 pointer-events-auto"
+        >
+          Building scalable web applications, AI systems, and digital products that deliver performance, reliability, and growth.
+        </motion.p>
+
+        {/* Top-Right Stat Block */}
+        <motion.div 
+          variants={fadeUp}
+          className="absolute right-6 md:right-24 top-[14%] flex flex-col items-end"
+        >
+          <div className="flex items-center gap-3 justify-end">
+            <div className="hidden md:block h-px w-24 bg-white/40 rotate-[20deg]" />
+            <span className="text-4xl md:text-5xl font-medium tracking-tight text-white font-mono">5+</span>
           </div>
-        </div>
-      )}
+          <span className="text-xs md:text-sm text-white/70 mt-1 text-right font-mono">Production Projects</span>
+        </motion.div>
 
-      {/* Hero content (bottom-left) */}
-      <div className="absolute bottom-0 left-0 z-20 px-6 sm:px-12 pb-10 sm:pb-16 max-w-2xl">
-        <span className="font-mono text-xs text-cyan-400 uppercase tracking-widest block mb-2">{'// AI/ML & FULL STACK DEVELOPER'}</span>
-        <h1 className="text-white text-4xl sm:text-5xl lg:text-6xl font-medium leading-tight tracking-tight mb-4">
-          Mahit Saxena
-        </h1>
-        <p className="text-white/60 text-sm leading-relaxed mb-7 max-w-md">
-          Motivated BCA student specializing in Artificial Intelligence and Machine Learning at Shri Ramswaroop Memorial University. Passionate Full Stack Developer building production-grade Next.js, MERN, and AI-powered applications.
-        </p>
+        {/* Bottom-Left Stat Block */}
+        <motion.div 
+          variants={fadeUp}
+          className="absolute left-6 md:left-20 bottom-20 md:bottom-24 flex flex-col items-start"
+        >
+          <div className="flex items-center gap-3">
+            <span className="text-4xl md:text-5xl font-medium tracking-tight text-white font-mono">7+</span>
+            <div className="hidden md:block h-px w-24 bg-white/40 rotate-[-20deg]" />
+          </div>
+          <span className="text-xs md:text-sm text-white/70 mt-1 font-mono">Certifications</span>
+        </motion.div>
 
-        {/* Buttons row */}
-        <div className="flex flex-wrap items-center gap-3">
-          <Link
-            href="/experience"
-            className="bg-white text-black text-sm sm:text-base font-medium px-6 sm:px-7 py-3 rounded-full hover:bg-white/90 transition-colors inline-block"
-          >
-            Explore Experience
-          </Link>
-          <Link
-            href="/certificates"
-            className="liquid-glass text-white text-sm sm:text-base font-medium px-6 sm:px-7 py-3 rounded-full hover:bg-white/5 transition-colors inline-block"
-          >
-            View Credentials
-          </Link>
-        </div>
-      </div>
-    </div>
+        {/* Bottom-Right Stat Block */}
+        <motion.div 
+          variants={fadeUp}
+          className="absolute right-6 md:right-20 bottom-16 md:bottom-20 flex flex-col items-end"
+        >
+          <div className="flex items-center gap-3 justify-end">
+            <div className="hidden md:block h-px w-24 bg-white/40 rotate-[-20deg]" />
+            <span className="text-4xl md:text-5xl font-medium tracking-tight text-white font-mono">100%</span>
+          </div>
+          <span className="text-xs md:text-sm text-white/70 mt-1 text-right font-mono">Type-Safe Code</span>
+        </motion.div>
+      </motion.div>
+
+      {/* Bottom Gradient Fade */}
+      <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-b from-transparent to-black z-10" />
+    </section>
   );
 }

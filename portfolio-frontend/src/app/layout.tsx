@@ -5,8 +5,8 @@ import './globals.css';
 
 
 export const metadata: Metadata = {
-  title: 'Mahit // Portfolio Engine',
-  description: 'Full-stack portfolio engineered with Next.js, Express, TypeScript, and interactive React Three Fiber.',
+  title: 'Mahit Saxena | Building Intelligent Digital Products',
+  description: 'Full Stack Developer specializing in Next.js, AI Agents, Cloud Infrastructure, and scalable web applications.',
   keywords: ['Full-stack developer', 'WebGL', 'Three.js', 'Next.js', 'Express', 'React Three Fiber', 'TypeScript'],
 };
 
