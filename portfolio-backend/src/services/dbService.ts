@@ -25,6 +25,7 @@ const DEFAULT_DB: DbSchema = {
     'cert-tata': 0,
     'cert-cyber': 0,
     'cert-data': 0,
+    'cert-datamining': 0,
   },
   messagesCount: 0,
 };

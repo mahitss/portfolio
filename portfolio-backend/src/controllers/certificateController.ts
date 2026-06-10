@@ -4,53 +4,61 @@ import { ICertificate } from '../interfaces/certificate';
 const REAL_CERTIFICATES: ICertificate[] = [
   {
     id: 'cert-gemini',
-    name: 'Google Gemini AI Certification',
+    name: 'Gemini for Google Workspace',
     issuer: 'Google',
-    issueDate: '2026-05-15',
+    issueDate: 'May 2026',
     imageUrl: '/certs/Gemini google.pdf',
     verificationUrl: 'https://grow.google'
   },
   {
     id: 'cert-hackathon',
-    name: 'Snowflake Hackathon Certification of Excellence',
-    issuer: 'Snowflake',
-    issueDate: '2026-04-30',
+    name: 'SnowStorm Hackathon Certificate of Excellence',
+    issuer: 'Tech4Hack',
+    issueDate: 'Apr 2026',
     imageUrl: '/certs/snow hacathon certificate.pdf'
   },
   {
     id: 'cert-ml',
-    name: 'Machine Learning Masterclass',
-    issuer: 'Stanford Online / Coursera',
-    issueDate: '2026-04-12',
+    name: 'Machine Learning Using Python',
+    issuer: 'NPTEL',
+    issueDate: 'May 2026',
     imageUrl: '/certs/Machine Learning.pdf'
   },
   {
     id: 'cert-ai',
-    name: 'Artificial Intelligence Foundations',
-    issuer: 'IBM',
-    issueDate: '2026-03-20',
+    name: 'Introduction to Artificial Intelligence',
+    issuer: 'NPTEL',
+    issueDate: 'May 2026',
     imageUrl: '/certs/AI.pdf'
   },
   {
     id: 'cert-tata',
-    name: 'Tata Virtual Experience Program',
-    issuer: 'Tata Group',
-    issueDate: '2026-02-28',
+    name: 'GenAI Powered Data Analytics Job Simulation',
+    issuer: 'TATA via Forage',
+    issueDate: 'Oct 2025',
     imageUrl: '/certs/tata.pdf'
   },
   {
     id: 'cert-cyber',
-    name: 'Cybersecurity Essentials',
-    issuer: 'Cisco Networking Academy',
-    issueDate: '2026-02-10',
+    name: 'Cyber Job Simulation',
+    issuer: 'Deloitte via Forage',
+    issueDate: 'Oct 2025',
     imageUrl: '/certs/cyber.pdf'
   },
   {
     id: 'cert-data',
-    name: 'Data Analytics Specialization',
-    issuer: 'Google Career Certificates',
-    issueDate: '2026-01-15',
+    name: 'Data Analytics Job Simulation',
+    issuer: 'Deloitte via Forage',
+    issueDate: 'Oct 2025',
     imageUrl: '/certs/data analytics.pdf'
+  },
+  {
+    id: 'cert-datamining',
+    name: 'Data Mining',
+    issuer: 'NPTEL - IIT Kharagpur (Swayam)',
+    issueDate: 'Jan-Mar 2026',
+    imageUrl: '', // No PDF file, verification only or placeholder
+    verificationUrl: 'https://swayam.gov.in'
   }
 ];
 

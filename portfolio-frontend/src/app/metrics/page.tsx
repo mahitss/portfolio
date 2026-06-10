@@ -21,17 +21,27 @@ const MOCK_METRICS_DATA: MetricsData = {
     '/metrics': 12
   },
   certificateClicks: {
-    'cert-1': 48,
-    'cert-2': 31,
-    'cert-3': 22
+    'cert-gemini': 48,
+    'cert-hackathon': 31,
+    'cert-ml': 25,
+    'cert-ai': 18,
+    'cert-tata': 15,
+    'cert-cyber': 12,
+    'cert-data': 9,
+    'cert-datamining': 5
   },
   messagesCount: 8
 };
 
 const CERT_NAME_MAP: Record<string, string> = {
-  'cert-1': 'Advanced React & 3D WebGL Development',
-  'cert-2': 'Cloud Solutions Architect Certification',
-  'cert-3': 'Full-Stack TypeScript Engineering'
+  'cert-gemini': 'Gemini for Google Workspace',
+  'cert-hackathon': 'SnowStorm Hackathon Certificate of Excellence',
+  'cert-ml': 'Machine Learning Using Python (NPTEL)',
+  'cert-ai': 'Introduction to Artificial Intelligence (NPTEL)',
+  'cert-tata': 'GenAI Powered Data Analytics Job Simulation (TATA)',
+  'cert-cyber': 'Cyber Job Simulation (Deloitte)',
+  'cert-data': 'Data Analytics Job Simulation (Deloitte)',
+  'cert-datamining': 'Data Mining (NPTEL)'
 };
 
 export default function MetricsDashboard() {
@@ -63,9 +73,14 @@ export default function MetricsDashboard() {
       };
       
       const certificateClicks = {
-        'cert-1': 0,
-        'cert-2': 0,
-        'cert-3': 0,
+        'cert-gemini': 0,
+        'cert-hackathon': 0,
+        'cert-ml': 0,
+        'cert-ai': 0,
+        'cert-tata': 0,
+        'cert-cyber': 0,
+        'cert-data': 0,
+        'cert-datamining': 0,
         ...data.certificateClicks
       };
 

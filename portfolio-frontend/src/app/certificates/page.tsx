@@ -18,55 +18,64 @@ export interface ICertificate {
 const LOCAL_BACKUP_CERTIFICATES: ICertificate[] = [
   {
     id: 'cert-gemini',
-    name: 'Google Gemini AI Certification',
+    name: 'Gemini for Google Workspace',
     issuer: 'Google',
-    issueDate: '2026-05-15',
+    issueDate: 'May 2026',
     imageUrl: '/certs/Gemini google.pdf',
     verificationUrl: 'https://grow.google'
   },
   {
     id: 'cert-hackathon',
-    name: 'Snowflake Hackathon Certification of Excellence',
-    issuer: 'Snowflake',
-    issueDate: '2026-04-30',
+    name: 'SnowStorm Hackathon Certificate of Excellence',
+    issuer: 'Tech4Hack',
+    issueDate: 'Apr 2026',
     imageUrl: '/certs/snow hacathon certificate.pdf'
   },
   {
     id: 'cert-ml',
-    name: 'Machine Learning Masterclass',
-    issuer: 'Stanford Online / Coursera',
-    issueDate: '2026-04-12',
+    name: 'Machine Learning Using Python',
+    issuer: 'NPTEL',
+    issueDate: 'May 2026',
     imageUrl: '/certs/Machine Learning.pdf'
   },
   {
     id: 'cert-ai',
-    name: 'Artificial Intelligence Foundations',
-    issuer: 'IBM',
-    issueDate: '2026-03-20',
+    name: 'Introduction to Artificial Intelligence',
+    issuer: 'NPTEL',
+    issueDate: 'May 2026',
     imageUrl: '/certs/AI.pdf'
   },
   {
     id: 'cert-tata',
-    name: 'Tata Virtual Experience Program',
-    issuer: 'Tata Group',
-    issueDate: '2026-02-28',
+    name: 'GenAI Powered Data Analytics Job Simulation',
+    issuer: 'TATA via Forage',
+    issueDate: 'Oct 2025',
     imageUrl: '/certs/tata.pdf'
   },
   {
     id: 'cert-cyber',
-    name: 'Cybersecurity Essentials',
-    issuer: 'Cisco Networking Academy',
-    issueDate: '2026-02-10',
+    name: 'Cyber Job Simulation',
+    issuer: 'Deloitte via Forage',
+    issueDate: 'Oct 2025',
     imageUrl: '/certs/cyber.pdf'
   },
   {
     id: 'cert-data',
-    name: 'Data Analytics Specialization',
-    issuer: 'Google Career Certificates',
-    issueDate: '2026-01-15',
+    name: 'Data Analytics Job Simulation',
+    issuer: 'Deloitte via Forage',
+    issueDate: 'Oct 2025',
     imageUrl: '/certs/data analytics.pdf'
+  },
+  {
+    id: 'cert-datamining',
+    name: 'Data Mining',
+    issuer: 'NPTEL - IIT Kharagpur (Swayam)',
+    issueDate: 'Jan-Mar 2026',
+    imageUrl: '', // No PDF file, verification only or placeholder
+    verificationUrl: 'https://swayam.gov.in'
   }
 ];
+
 
 export default function Certificates() {
   const [certs, setCerts] = useState<ICertificate[]>([]);
@@ -296,7 +305,15 @@ export default function Certificates() {
                     >
                       {/* Interactive Image Frame / PDF Viewer */}
                       <div className="relative aspect-[4/3] w-full rounded-2xl border border-white/10 bg-black overflow-hidden flex items-center justify-center group shadow-xl">
-                        {selectedCert.imageUrl.toLowerCase().endsWith('.pdf') ? (
+                        {!selectedCert.imageUrl ? (
+                          <div className="flex flex-col items-center justify-center p-6 text-center space-y-4">
+                            <ShieldCheck size={48} className="text-cyan-400 animate-pulse" />
+                            <div>
+                              <p className="font-mono text-xs text-white font-bold">Verification Portal Only</p>
+                              <p className="font-mono text-[10px] text-slate-500 mt-1">This certification is verified directly on the issuer&apos;s verification portal.</p>
+                            </div>
+                          </div>
+                        ) : selectedCert.imageUrl.toLowerCase().endsWith('.pdf') ? (
                           <iframe
                             src={`${selectedCert.imageUrl}#toolbar=0&navpanes=0`}
                             className="w-full h-full border-none rounded-xl"

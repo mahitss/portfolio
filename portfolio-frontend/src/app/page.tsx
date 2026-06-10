@@ -128,11 +128,12 @@ export default function Home() {
 
       {/* Hero content (bottom-left) */}
       <div className="absolute bottom-0 left-0 z-20 px-6 sm:px-12 pb-10 sm:pb-16 max-w-2xl">
+        <span className="font-mono text-xs text-cyan-400 uppercase tracking-widest block mb-2">{'// AI/ML & FULL STACK DEVELOPER'}</span>
         <h1 className="text-white text-4xl sm:text-5xl lg:text-6xl font-medium leading-tight tracking-tight mb-4">
-          Engineering Systems from Pixel to Database
+          Mahit Saxena
         </h1>
         <p className="text-white/60 text-sm leading-relaxed mb-7 max-w-md">
-          Crafting high-performance web applications, interactive 3D WebGL interfaces, and secure API servers. Designed with premium aesthetics and engineered for full-stack reliability.
+          Motivated BCA student specializing in Artificial Intelligence and Machine Learning at Shri Ramswaroop Memorial University. Passionate Full Stack Developer building production-grade Next.js, MERN, and AI-powered applications.
         </p>
 
         {/* Buttons row */}
