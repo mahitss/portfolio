@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: portfolio-backend
+    runtime: node
+    plan: free
+    rootDir: portfolio-backend
+    buildCommand: npm run build
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: CORS_WHITELIST
+        value: "*"
