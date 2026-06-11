@@ -25,7 +25,7 @@ app.use(helmet({
 const whitelist = (process.env.CORS_WHITELIST || 'http://localhost:3000').split(',');
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
-    if (!origin || whitelist.indexOf(origin) !== -1) {
+    if (!origin || whitelist.includes('*') || whitelist.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
