@@ -8,40 +8,40 @@ import { Palette, Sparkles, Settings, Github, Linkedin } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const pathname = usePathname();
-  const { colorTheme, setColorTheme, motionMode, setMotionMode, apiStatus, checkApiStatus, apiLatency, apiUptime } = useTheme3D();
+  const { colorTheme, setColorTheme, motionMode, setMotionMode, apiStatus, checkApiStatus } = useTheme3D();
   const [showControls, setShowControls] = useState(false);
 
   // Helper to determine if a route is active
   const isActive = (path: string) => pathname === path;
 
   return (
-    <header className="sticky top-0 z-50 w-full px-6 py-4">
-      <div className="mx-auto max-w-7xl flex items-center justify-between glass-panel rounded-2xl px-6 py-3 transition-all duration-300">
+    <header className="sticky top-0 z-50 w-full px-6 py-4 select-none">
+      <div className="mx-auto max-w-7xl flex items-center justify-between bg-neutral-950/60 backdrop-blur-md rounded-full px-4 py-2.5 border border-white/5 shadow-2xl transition-all duration-300">
         
-        {/* Logo */}
-        <Link href="/" className="flex items-center space-x-2 group">
-          <div className="w-3 h-3 bg-gradient-to-r from-purple-500 to-cyan-400 rounded-full group-hover:scale-125 transition-transform duration-300 animate-pulse"></div>
-          <span className="font-mono text-sm font-bold tracking-[0.25em] text-white">
-            MAHIT<span className="text-cyan-400">.</span>IN
-          </span>
+        {/* Brand logo pill */}
+        <Link href="/" className="flex items-center gap-2 bg-neutral-900/40 hover:bg-neutral-800/60 backdrop-blur rounded-full pl-3 pr-4 py-2 border border-white/5 transition-colors group">
+          <svg viewBox="0 0 256 256" className="h-4 w-4 fill-white group-hover:rotate-12 transition-transform duration-300">
+            <path d="M 128 192 L 128 256 L 64.5 256 L 32 223 L 0 192 L 0 128 L 64 128 Z M 256 192 L 256 256 L 192.5 256 L 160 223 L 128 192 L 128 128 L 192 128 Z M 128 64 L 128 128 L 64.5 128 L 32 95 L 0 64 L 0 0 L 64 0 Z M 256 64 L 256 128 L 192.5 128 L 160 95 L 128 64 L 128 0 L 192 0 Z" />
+          </svg>
+          <span className="text-white text-xs font-normal tracking-tight lowercase">mahit</span>
         </Link>
 
-        {/* Center Navigation Links */}
-        <nav className="hidden md:flex items-center space-x-1 font-mono text-xs">
+        {/* Center Navigation Links - pill style */}
+        <nav className="hidden md:flex items-center gap-1 bg-neutral-900/40 backdrop-blur rounded-full px-2 py-1.5 border border-white/5">
           {[
-            { name: 'Home', path: '/' },
-            { name: 'Experience', path: '/experience' },
-            { name: 'Certificates', path: '/certificates' },
-            { name: 'Contact', path: '/contact' },
-            { name: 'Metrics', path: '/metrics' },
+            { name: 'home', path: '/' },
+            { name: 'experience', path: '/experience' },
+            { name: 'certificates', path: '/certificates' },
+            { name: 'contact', path: '/contact' },
+            { name: 'metrics', path: '/metrics' },
           ].map((link) => (
             <Link
               key={link.path}
               href={link.path}
-              className={`px-4 py-2 rounded-xl transition-all duration-300 ${
+              className={`transition-all duration-300 text-xs px-5 py-2 rounded-full lowercase ${
                 isActive(link.path)
-                  ? 'bg-white/10 text-white border border-white/10 shadow-lg'
-                  : 'text-slate-400 hover:text-white hover:bg-white/5 border border-transparent'
+                  ? 'bg-white text-black font-normal shadow-md'
+                  : 'text-neutral-300 hover:text-white hover:bg-white/5'
               }`}
             >
               {link.name}
@@ -51,29 +51,29 @@ export const Navbar: React.FC = () => {
 
 
         {/* Right side widgets: Status, Theme Controls, and Links */}
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-2">
           
           {/* Express API System Status Component */}
           <div 
             onClick={checkApiStatus}
-            className="flex items-center space-x-2 px-3 py-1.5 rounded-full bg-black/40 border border-white/5 cursor-pointer hover:bg-black/60 transition-all duration-300"
+            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-black/40 border border-white/5 cursor-pointer hover:bg-black/60 transition-all duration-300"
             title="Click to re-ping Express backend API"
           >
-            <span className={`relative flex h-2 w-2`}>
+            <span className={`relative flex h-1.5 w-1.5`}>
               <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
                 apiStatus === 'operational' ? 'bg-emerald-400' : apiStatus === 'checking' ? 'bg-amber-400' : 'bg-rose-400'
               }`}></span>
-              <span className={`relative inline-flex rounded-full h-2 w-2 ${
+              <span className={`relative inline-flex rounded-full h-1.5 w-1.5 ${
                 apiStatus === 'operational' ? 'bg-emerald-500' : apiStatus === 'checking' ? 'bg-amber-500' : 'bg-rose-500'
               }`}></span>
             </span>
-            <span className="font-mono text-[10px] text-slate-400 select-none hidden lg:inline">
-              Express API: {
+            <span className="font-mono text-[9px] text-slate-400 select-none hidden lg:inline">
+              api: {
                 apiStatus === 'operational'
-                  ? `Operational (Ping: ${apiLatency !== null ? `${apiLatency}ms` : '--'} | Uptime: ${apiUptime || '--'})`
+                  ? 'online'
                   : apiStatus === 'checking'
-                  ? 'Checking...'
-                  : 'Offline'
+                  ? 'pinging'
+                  : 'offline'
               }
             </span>
           </div>
@@ -81,25 +81,25 @@ export const Navbar: React.FC = () => {
           {/* Toggle Control Panel Button */}
           <button
             onClick={() => setShowControls(!showControls)}
-            className={`p-2 rounded-xl border transition-all duration-300 ${
+            className={`p-2 rounded-full border transition-all duration-300 ${
               showControls 
                 ? 'bg-cyan-500/20 border-cyan-500/30 text-cyan-400' 
                 : 'bg-white/5 border-white/10 text-slate-400 hover:text-white hover:bg-white/10'
             }`}
             title="Configure Background 3D Theme"
           >
-            <Settings size={16} className={showControls ? 'animate-spin' : ''} />
+            <Settings size={12} className={showControls ? 'animate-spin' : ''} />
           </button>
 
           {/* Social Quick Links */}
-          <div className="hidden sm:flex items-center space-x-2 border-l border-white/10 pl-3">
+          <div className="hidden sm:flex items-center space-x-1 border-l border-white/10 pl-2">
             <a
               href="https://github.com/mahitss"
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 text-slate-400 hover:text-white transition-colors duration-300"
             >
-              <Github size={16} />
+              <Github size={12} />
             </a>
             <a
               href="https://linkedin.com/in/mahit-saxena-74561a377"
@@ -107,7 +107,7 @@ export const Navbar: React.FC = () => {
               rel="noopener noreferrer"
               className="p-2 text-slate-400 hover:text-white transition-colors duration-300"
             >
-              <Linkedin size={16} />
+              <Linkedin size={12} />
             </a>
           </div>
 
@@ -177,21 +177,21 @@ export const Navbar: React.FC = () => {
       )}
 
       {/* Mobile navigation row (visible only on small devices) */}
-      <div className="md:hidden flex justify-center gap-1.5 mt-3 px-2 font-mono text-[10px]">
+      <div className="md:hidden flex justify-center gap-1 mt-3 px-1 text-[9px] bg-neutral-900/40 backdrop-blur border border-white/5 rounded-full py-1.5 shadow-xl">
         {[
-          { name: 'Home', path: '/' },
-          { name: 'Experience', path: '/experience' },
-          { name: 'Certificates', path: '/certificates' },
-          { name: 'Contact', path: '/contact' },
-          { name: 'Metrics', path: '/metrics' },
+          { name: 'home', path: '/' },
+          { name: 'experience', path: '/experience' },
+          { name: 'certificates', path: '/certificates' },
+          { name: 'contact', path: '/contact' },
+          { name: 'metrics', path: '/metrics' },
         ].map((link) => (
           <Link
             key={link.path}
             href={link.path}
-            className={`flex-1 text-center py-2 rounded-lg transition-all duration-300 ${
+            className={`flex-1 text-center py-1.5 rounded-full transition-all duration-300 lowercase ${
               isActive(link.path)
-                ? 'bg-white/10 text-white border border-white/10'
-                : 'text-slate-400 hover:text-white bg-black/20 border border-white/5'
+                ? 'bg-white text-black font-normal'
+                : 'text-slate-400 hover:text-white'
             }`}
           >
             {link.name}

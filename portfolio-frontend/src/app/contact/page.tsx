@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Card3D from '../components/Card3D';
 
 import { Mail, Github, Linkedin, Send, CheckCircle2, AlertTriangle, ExternalLink, RefreshCw } from 'lucide-react';
 
@@ -174,59 +175,68 @@ export default function Contact() {
             <div className="space-y-4">
               <h3 className="font-mono text-xs font-bold uppercase tracking-wider text-slate-300">Direct Pipelines</h3>
               <div className="space-y-3">
-                <a
-                  href="mailto:mahitsaxena44@gmail.com"
-                  className="flex items-center space-x-3 p-4 rounded-xl glass-panel border-white/5 hover:border-white/15 hover:bg-white/[0.02] transition-all duration-300 group"
-                >
-                  <div className="p-2.5 rounded-lg bg-white/5 border border-white/10 group-hover:bg-purple-500/10 group-hover:border-purple-500/20 transition-all">
-                    <Mail size={16} className="text-purple-400" />
-                  </div>
-                  <div>
-                    <p className="font-mono text-[9px] text-slate-500 uppercase tracking-widest">Email Address</p>
-                    <p className="text-xs text-slate-300 font-mono">mahitsaxena44@gmail.com</p>
-                  </div>
-                </a>
+                <Card3D className="glass-panel rounded-xl hover:bg-white/[0.02] border-white/5 hover:border-white/10 transition-all duration-300">
+                  <a
+                    href="mailto:mahitsaxena44@gmail.com"
+                    className="flex items-center space-x-3 p-4 group"
+                    style={{ transform: 'translateZ(10px)' }}
+                  >
+                    <div className="p-2.5 rounded-lg bg-white/5 border border-white/10 group-hover:bg-purple-500/10 group-hover:border-purple-500/20 transition-all">
+                      <Mail size={16} className="text-purple-400" />
+                    </div>
+                    <div>
+                      <p className="font-mono text-[9px] text-slate-500 uppercase tracking-widest">Email Address</p>
+                      <p className="text-xs text-slate-300 font-mono">mahitsaxena44@gmail.com</p>
+                    </div>
+                  </a>
+                </Card3D>
 
-                <a
-                  href="https://linkedin.com/in/mahit-saxena-74561a377"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center space-x-3 p-4 rounded-xl glass-panel border-white/5 hover:border-white/15 hover:bg-white/[0.02] transition-all duration-300 group"
-                >
-                  <div className="p-2.5 rounded-lg bg-white/5 border border-white/10 group-hover:bg-cyan-500/10 group-hover:border-cyan-500/20 transition-all">
-                    <Linkedin size={16} className="text-cyan-400" />
-                  </div>
-                  <div>
-                    <p className="font-mono text-[9px] text-slate-500 uppercase tracking-widest">LinkedIn Profile</p>
-                    <p className="text-xs text-slate-300 font-mono flex items-center gap-1">
-                      linkedin.com/in/mahit-saxena-74561a377 <ExternalLink size={10} className="text-slate-500" />
-                    </p>
-                  </div>
-                </a>
+                <Card3D className="glass-panel rounded-xl hover:bg-white/[0.02] border-white/5 hover:border-white/10 transition-all duration-300">
+                  <a
+                    href="https://linkedin.com/in/mahit-saxena-74561a377"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center space-x-3 p-4 group"
+                    style={{ transform: 'translateZ(10px)' }}
+                  >
+                    <div className="p-2.5 rounded-lg bg-white/5 border border-white/10 group-hover:bg-cyan-500/10 group-hover:border-cyan-500/20 transition-all">
+                      <Linkedin size={16} className="text-cyan-400" />
+                    </div>
+                    <div>
+                      <p className="font-mono text-[9px] text-slate-500 uppercase tracking-widest">LinkedIn Profile</p>
+                      <p className="text-xs text-slate-300 font-mono flex items-center gap-1">
+                        linkedin.com/in/mahit-saxena-74561a377 <ExternalLink size={10} className="text-slate-500" />
+                      </p>
+                    </div>
+                  </a>
+                </Card3D>
 
-                <a
-                  href="https://github.com/mahitss"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center space-x-3 p-4 rounded-xl glass-panel border-white/5 hover:border-white/15 hover:bg-white/[0.02] transition-all duration-300 group"
-                >
-                  <div className="p-2.5 rounded-lg bg-white/5 border border-white/10 group-hover:bg-emerald-500/10 group-hover:border-emerald-500/20 transition-all">
-                    <Github size={16} className="text-emerald-400" />
-                  </div>
-                  <div>
-                    <p className="font-mono text-[9px] text-slate-500 uppercase tracking-widest">GitHub Repository</p>
-                    <p className="text-xs text-slate-300 font-mono flex items-center gap-1">
-                      github.com/mahitss <ExternalLink size={10} className="text-slate-500" />
-                    </p>
-                  </div>
-                </a>
+                <Card3D className="glass-panel rounded-xl hover:bg-white/[0.02] border-white/5 hover:border-white/10 transition-all duration-300">
+                  <a
+                    href="https://github.com/mahitss"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center space-x-3 p-4 group"
+                    style={{ transform: 'translateZ(10px)' }}
+                  >
+                    <div className="p-2.5 rounded-lg bg-white/5 border border-white/10 group-hover:bg-emerald-500/10 group-hover:border-emerald-500/20 transition-all">
+                      <Github size={16} className="text-emerald-400" />
+                    </div>
+                    <div>
+                      <p className="font-mono text-[9px] text-slate-500 uppercase tracking-widest">GitHub Repository</p>
+                      <p className="text-xs text-slate-300 font-mono flex items-center gap-1">
+                        github.com/mahitss <ExternalLink size={10} className="text-slate-500" />
+                      </p>
+                    </div>
+                  </a>
+                </Card3D>
               </div>
             </div>
           </div>
 
           {/* Right Column: Glassmorphic Form (7 Columns) */}
           <div className="lg:col-span-7">
-            <div className="glass-panel p-6 md:p-8 rounded-3xl border-white/10 relative overflow-hidden bg-white/5 backdrop-blur-md">
+            <Card3D maxTilt={4} className="glass-panel p-6 md:p-8 rounded-3xl border-white/10 relative overflow-hidden bg-white/5 backdrop-blur-md">
               
               {/* Form header */}
               <div className="mb-6 border-b border-white/5 pb-4">
@@ -398,7 +408,7 @@ export default function Contact() {
                 </button>
               </form>
 
-            </div>
+            </Card3D>
           </div>
 
         </div>

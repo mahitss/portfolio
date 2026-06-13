@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Card3D from '../components/Card3D';
 
 import { Eye, Award, Mail, RefreshCw, Database, Terminal, Layout, MousePointer, Activity } from 'lucide-react';
 
@@ -175,106 +176,117 @@ export default function MetricsDashboard() {
             {/* KPI Cards Row */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Card 1: Page Views */}
-              <div className="glass-panel p-6 rounded-2xl border-white/5 relative overflow-hidden bg-white/[0.01]">
-                <div className="absolute top-4 right-4 w-10 h-10 bg-cyan-500/10 rounded-full flex items-center justify-center border border-cyan-500/10">
-                  <Eye size={18} className="text-cyan-400" />
+              <Card3D className="glass-panel p-6 rounded-2xl border-white/5 relative overflow-hidden bg-white/[0.01]">
+                <div style={{ transform: 'translateZ(15px)', position: 'relative' }}>
+                  <div className="absolute top-0 right-0 w-10 h-10 bg-cyan-500/10 rounded-full flex items-center justify-center border border-cyan-500/10">
+                    <Eye size={18} className="text-cyan-400" />
+                  </div>
+                  <p className="font-mono text-[10px] text-slate-500 uppercase tracking-wider">Total Route Operations</p>
+                  <h3 className="text-3xl font-extrabold text-white mt-2 font-mono">
+                    {totalPageViews}
+                  </h3>
+                  <p className="text-xs text-slate-400 mt-2 font-light">Accumulated path visits captured globally.</p>
                 </div>
-                <p className="font-mono text-[10px] text-slate-500 uppercase tracking-wider">Total Route Operations</p>
-                <h3 className="text-3xl font-extrabold text-white mt-2 font-mono">
-                  {totalPageViews}
-                </h3>
-                <p className="text-xs text-slate-400 mt-2 font-light">Accumulated path visits captured globally.</p>
-              </div>
+              </Card3D>
 
               {/* Card 2: Certificate clicks */}
-              <div className="glass-panel p-6 rounded-2xl border-white/5 relative overflow-hidden bg-white/[0.01]">
-                <div className="absolute top-4 right-4 w-10 h-10 bg-purple-500/10 rounded-full flex items-center justify-center border border-purple-500/10">
-                  <MousePointer size={18} className="text-purple-400" />
+              <Card3D className="glass-panel p-6 rounded-2xl border-white/5 relative overflow-hidden bg-white/[0.01]">
+                <div style={{ transform: 'translateZ(15px)', position: 'relative' }}>
+                  <div className="absolute top-0 right-0 w-10 h-10 bg-purple-500/10 rounded-full flex items-center justify-center border border-purple-500/10">
+                    <MousePointer size={18} className="text-purple-400" />
+                  </div>
+                  <p className="font-mono text-[10px] text-slate-500 uppercase tracking-wider">Credential Inspections</p>
+                  <h3 className="text-3xl font-extrabold text-white mt-2 font-mono">
+                    {totalCertClicks}
+                  </h3>
+                  <p className="text-xs text-slate-400 mt-2 font-light">Interactive click selections inside `/certificates`.</p>
                 </div>
-                <p className="font-mono text-[10px] text-slate-500 uppercase tracking-wider">Credential Inspections</p>
-                <h3 className="text-3xl font-extrabold text-white mt-2 font-mono">
-                  {totalCertClicks}
-                </h3>
-                <p className="text-xs text-slate-400 mt-2 font-light">Interactive click selections inside `/certificates`.</p>
-              </div>
+              </Card3D>
 
               {/* Card 3: Sent Messages */}
-              <div className="glass-panel p-6 rounded-2xl border-white/5 relative overflow-hidden bg-white/[0.01]">
-                <div className="absolute top-4 right-4 w-10 h-10 bg-emerald-500/10 rounded-full flex items-center justify-center border border-emerald-500/10">
-                  <Mail size={18} className="text-emerald-400" />
+              <Card3D className="glass-panel p-6 rounded-2xl border-white/5 relative overflow-hidden bg-white/[0.01]">
+                <div style={{ transform: 'translateZ(15px)', position: 'relative' }}>
+                  <div className="absolute top-0 right-0 w-10 h-10 bg-emerald-500/10 rounded-full flex items-center justify-center border border-emerald-500/10">
+                    <Mail size={18} className="text-emerald-400" />
+                  </div>
+                  <p className="font-mono text-[10px] text-slate-500 uppercase tracking-wider">SMTP Packages Transmitted</p>
+                  <h3 className="text-3xl font-extrabold text-white mt-2 font-mono">
+                    {metrics.messagesCount}
+                  </h3>
+                  <p className="text-xs text-slate-400 mt-2 font-light">Valid full-stack submissions parsed to mail.</p>
                 </div>
-                <p className="font-mono text-[10px] text-slate-500 uppercase tracking-wider">SMTP Packages Transmitted</p>
-                <h3 className="text-3xl font-extrabold text-white mt-2 font-mono">
-                  {metrics.messagesCount}
-                </h3>
-                <p className="text-xs text-slate-400 mt-2 font-light">Valid full-stack submissions parsed to mail.</p>
-              </div>
+              </Card3D>
             </div>
 
             {/* Graphs Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               
               {/* Page Views Breakdown */}
-              <div className="glass-panel p-6 rounded-3xl border-white/5 bg-white/[0.01] space-y-6">
-                <div className="flex items-center gap-2 border-b border-white/5 pb-4">
-                  <Layout size={16} className="text-cyan-400" />
-                  <h3 className="font-mono text-sm font-bold text-white uppercase tracking-wider">Page View Telemetry</h3>
-                </div>
+              <Card3D className="glass-panel p-6 rounded-3xl border-white/5 bg-white/[0.01] space-y-6">
+                <div style={{ transform: 'translateZ(15px)' }} className="space-y-6">
+                  <div className="flex items-center gap-2 border-b border-white/5 pb-4">
+                    <Layout size={16} className="text-cyan-400" />
+                    <h3 className="font-mono text-sm font-bold text-white uppercase tracking-wider">Page View Telemetry</h3>
+                  </div>
 
-                <div className="space-y-4">
-                  {Object.entries(metrics.pageViews).map(([path, val]) => {
-                    const percentage = Math.round((val / maxPageView) * 100);
-                    return (
-                      <div key={path} className="space-y-1">
-                        <div className="flex justify-between text-xs font-mono">
-                          <span className="text-slate-300">{path}</span>
-                          <span className="text-cyan-400 font-bold">{val} <span className="text-slate-500 text-[10px] font-normal">views</span></span>
+                  <div className="space-y-4">
+                    {Object.entries(metrics.pageViews).map(([path, val]) => {
+                      const percentage = Math.round((val / maxPageView) * 100);
+                      return (
+                        <div key={path} className="space-y-1">
+                          <div className="flex justify-between text-xs font-mono">
+                            <span className="text-slate-300">{path}</span>
+                            <span className="text-cyan-400 font-bold">{val} <span className="text-slate-500 text-[10px] font-normal">views</span></span>
+                          </div>
+                          <div className="w-full bg-white/[0.02] border border-white/5 h-2 rounded-full overflow-hidden">
+                            <div
+                              className="bg-gradient-to-r from-cyan-500 to-purple-500 h-full rounded-full transition-all duration-1000"
+                              style={{ width: `${percentage}%` }}
+                            />
+                          </div>
                         </div>
-                        <div className="w-full bg-white/[0.02] border border-white/5 h-2 rounded-full overflow-hidden">
-                          <div
-                            className="bg-gradient-to-r from-cyan-500 to-purple-500 h-full rounded-full transition-all duration-1000"
-                            style={{ width: `${percentage}%` }}
-                          />
-                        </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
+              </Card3D>
 
               {/* Certificate Interactions Breakdown */}
-              <div className="glass-panel p-6 rounded-3xl border-white/5 bg-white/[0.01] space-y-6">
-                <div className="flex items-center gap-2 border-b border-white/5 pb-4">
-                  <Award size={16} className="text-purple-400" />
-                  <h3 className="font-mono text-sm font-bold text-white uppercase tracking-wider">Credential Click Index</h3>
-                </div>
+              <Card3D className="glass-panel p-6 rounded-3xl border-white/5 bg-white/[0.01] space-y-6">
+                <div style={{ transform: 'translateZ(15px)' }} className="space-y-6">
+                  <div className="flex items-center gap-2 border-b border-white/5 pb-4">
+                    <Award size={16} className="text-purple-400" />
+                    <h3 className="font-mono text-sm font-bold text-white uppercase tracking-wider">Credential Click Index</h3>
+                  </div>
 
-                <div className="space-y-4">
-                  {Object.entries(metrics.certificateClicks).map(([certId, val]) => {
-                    const name = CERT_NAME_MAP[certId] || certId;
-                    const percentage = Math.round((val / maxCertClicks) * 100);
-                    return (
-                      <div key={certId} className="space-y-1">
-                        <div className="flex justify-between text-xs font-mono">
-                          <span className="text-slate-300 truncate max-w-[240px] md:max-w-[340px]" title={name}>{name}</span>
-                          <span className="text-purple-400 font-bold">{val} <span className="text-slate-500 text-[10px] font-normal">clicks</span></span>
+                  <div className="space-y-4">
+                    {Object.entries(metrics.certificateClicks).map(([certId, val]) => {
+                      const name = CERT_NAME_MAP[certId] || certId;
+                      const percentage = Math.round((val / maxCertClicks) * 100);
+                      return (
+                        <div key={certId} className="space-y-1">
+                          <div className="flex justify-between text-xs font-mono">
+                            <span className="text-slate-300 truncate max-w-[240px] md:max-w-[340px]" title={name}>{name}</span>
+                            <span className="text-purple-400 font-bold">{val} <span className="text-slate-500 text-[10px] font-normal">clicks</span></span>
+                          </div>
+                          <div className="w-full bg-white/[0.02] border border-white/5 h-2 rounded-full overflow-hidden">
+                            <div
+                              className="bg-gradient-to-r from-purple-500 to-rose-500 h-full rounded-full transition-all duration-1000"
+                              style={{ width: `${percentage}%` }}
+                            />
+                          </div>
                         </div>
-                        <div className="w-full bg-white/[0.02] border border-white/5 h-2 rounded-full overflow-hidden">
-                          <div
-                            className="bg-gradient-to-r from-purple-500 to-rose-500 h-full rounded-full transition-all duration-1000"
-                            style={{ width: `${percentage}%` }}
-                          />
-                        </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
+              </Card3D>
 
             </div>
 
             {/* Live DB Structure and Latency Inspector */}
-            <div className="glass-panel p-6 rounded-3xl border-white/5 bg-white/[0.01] space-y-4">
+            <Card3D className="glass-panel p-6 rounded-3xl border-white/5 bg-white/[0.01] space-y-4">
+              <div style={{ transform: 'translateZ(10px)' }} className="space-y-4">
               <div className="flex justify-between items-center border-b border-white/5 pb-4">
                 <div className="flex items-center gap-2">
                   <Terminal size={16} className="text-purple-400" />
@@ -317,7 +329,8 @@ export default function MetricsDashboard() {
                   </motion.div>
                 )}
               </AnimatePresence>
-            </div>
+              </div>
+            </Card3D>
 
           </div>
         )}

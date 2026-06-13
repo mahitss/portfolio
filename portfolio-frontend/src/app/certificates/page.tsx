@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Card3D from '../components/Card3D';
 
 import { Award, Calendar, ExternalLink, ShieldCheck, RefreshCw, Cpu, Terminal, ChevronDown, ChevronUp, Play, Copy, Check } from 'lucide-react';
 
@@ -250,7 +251,7 @@ export default function Certificates() {
               {certs.map((cert) => {
                 const isSelected = selectedCert?.id === cert.id;
                 return (
-                  <div
+                  <Card3D
                     key={cert.id}
                     onClick={() => handleSelectCert(cert)}
                     className={`p-5 rounded-2xl border cursor-pointer transition-all duration-300 relative overflow-hidden group ${
@@ -264,7 +265,7 @@ export default function Certificates() {
                       <div className="absolute top-0 bottom-0 left-0 w-1 bg-gradient-to-b from-purple-500 to-cyan-400" />
                     )}
 
-                    <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-start justify-between gap-3" style={{ transform: 'translateZ(15px)' }}>
                       <div className="space-y-1">
                         <h3 className={`text-sm font-bold transition-colors ${
                           isSelected ? 'text-white' : 'text-slate-300 group-hover:text-white'
@@ -281,14 +282,14 @@ export default function Certificates() {
                         </p>
                       </div>
                     </div>
-                  </div>
+                  </Card3D>
                 );
               })}
             </div>
 
             {/* Right Column: Sticky Preview Container (7 Columns) */}
             <div className="lg:col-span-7 lg:sticky lg:top-28 space-y-4">
-              <div className="glass-panel p-6 rounded-3xl border-white/5 flex flex-col h-full relative overflow-hidden">
+              <Card3D className="glass-panel p-6 rounded-3xl border-white/5 flex flex-col h-full relative overflow-hidden">
                 
                 {/* Glow Overlay */}
                 <div className="absolute -top-12 -right-12 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -379,7 +380,7 @@ export default function Certificates() {
                   )}
                 </AnimatePresence>
 
-              </div>
+              </Card3D>
             </div>
 
           </div>
@@ -387,7 +388,7 @@ export default function Certificates() {
 
         {/* Collapsible API Playground */}
         {!loading && (
-          <div className="mt-12 glass-panel p-6 rounded-3xl border-white/5 relative overflow-hidden bg-white/[0.01]">
+          <Card3D className="mt-12 glass-panel p-6 rounded-3xl border-white/5 relative overflow-hidden bg-white/[0.01]">
             <button
               onClick={() => setShowPlayground(!showPlayground)}
               className="w-full flex items-center justify-between font-mono text-sm tracking-wide text-white/95 focus:outline-none"
@@ -513,7 +514,7 @@ export default function Certificates() {
                 </motion.div>
               )}
             </AnimatePresence>
-          </div>
+          </Card3D>
         )}
 
       </div>

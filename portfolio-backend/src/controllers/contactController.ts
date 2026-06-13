@@ -63,8 +63,10 @@ export const handleContactForm = async (req: Request, res: Response) => {
       });
     }
 
+    const senderEmail = process.env.SMTP_USER || email;
     const mailOptions = {
-      from: `"${name}" <${email}>`,
+      from: `"${name} (via Portfolio)" <${senderEmail}>`,
+      replyTo: email,
       to: process.env.RECEIVER_EMAIL || 'portfolio-owner@example.com',
       subject: `Portfolio Contact Form: Message from ${name}`,
       text: `You have received a new contact message from your portfolio website:

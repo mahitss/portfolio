@@ -7,6 +7,8 @@ import { usePathname } from 'next/navigation';
 import { useTheme3D } from '../../context/Theme3DContext';
 import * as THREE from 'three';
 
+const VIDEO_SRC = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260418_063509_7d167302-4fd4-480b-8260-18ab572333d4.mp4';
+
 // Subcomponent to render and animate the particles inside the WebGL canvas
 const InteractiveScene: React.FC = () => {
   const pointsRef = useRef<THREE.Points>(null);
@@ -271,30 +273,45 @@ export const ThreeBackground: React.FC = () => {
     return <div className="fixed inset-0 bg-black z-[-1]" />;
   }
 
-  // Mobile fallback: static radial gradient backdrop instead of WebGL rendering
+  const renderBackgroundContent = () => (
+    <>
+      {/* Background Video */}
+      <video
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-30 z-0 animate-fade-in"
+        autoPlay
+        loop
+        muted
+        playsInline
+        src={VIDEO_SRC}
+      />
+      {/* Dark overlay to keep text readable */}
+      <div className="absolute inset-0 bg-black/60 z-[1] pointer-events-none" />
+      {/* Soft background ambient gradient */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0)_0%,rgba(0,0,0,0.85)_100%)] z-[2] pointer-events-none" />
+    </>
+  );
+
+  // Mobile fallback: video backdrop only, no WebGL rendering
   if (isMobile) {
     return (
-      <div 
-        className="fixed inset-0 bg-black z-[-1] transition-all duration-1000"
-        style={{
-          backgroundImage: 'radial-gradient(circle at 50% 40%, rgba(139, 92, 246, 0.15) 0%, rgba(6, 182, 212, 0.05) 50%, rgba(0, 0, 0, 1) 100%)'
-        }}
-      />
+      <div className="fixed inset-0 bg-black z-[-1] overflow-hidden pointer-events-none">
+        {renderBackgroundContent()}
+      </div>
     );
   }
 
   return (
     <div className="fixed inset-0 bg-black z-[-1] overflow-hidden pointer-events-none">
-      {/* Soft background ambient gradient */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0)_0%,rgba(0,0,0,0.85)_100%)] z-[1]" />
-      <Canvas
-        camera={{ position: [0, 0, 3.5], fov: 60 }}
-        gl={{ antialias: true, alpha: false }}
-      >
-        <color attach="background" args={['#000000']} />
-        <ambientLight intensity={0.5} />
-        <InteractiveScene />
-      </Canvas>
+      {renderBackgroundContent()}
+      <div className="absolute inset-0 w-full h-full z-[3]">
+        <Canvas
+          camera={{ position: [0, 0, 3.5], fov: 60 }}
+          gl={{ antialias: true, alpha: true }}
+        >
+          <ambientLight intensity={0.5} />
+          <InteractiveScene />
+        </Canvas>
+      </div>
     </div>
   );
 };

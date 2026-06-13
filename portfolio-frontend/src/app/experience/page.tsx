@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Trophy, Globe, Heart, ExternalLink } from 'lucide-react';
+import Card3D from '../components/Card3D';
 
 interface ProjectItem {
   title: string;
@@ -188,42 +189,43 @@ export default function Experience() {
                       <motion.div
                         key={idx}
                         variants={itemVariants}
-                        className="glass-panel p-6 rounded-2xl border-white/5 hover:border-white/10 hover:bg-white/[0.02] transition-all duration-300 relative group overflow-hidden"
                       >
-                        <div className="absolute top-0 bottom-0 left-0 w-1 bg-gradient-to-b from-purple-500/80 to-cyan-400/80 opacity-0 group-hover:opacity-100 transition-opacity" />
-                        
-                        <div className="flex items-start justify-between gap-4">
-                          <div className="space-y-2.5">
-                            <h3 className="text-lg font-bold text-white tracking-wide group-hover:text-cyan-400 transition-colors">
-                              {proj.title}
-                            </h3>
-                            {/* Tech Badges */}
-                            <div className="flex flex-wrap gap-1.5">
-                              {proj.tech.map((t) => (
-                                <span
-                                  key={t}
-                                  className="font-mono text-[9px] text-cyan-400/90 bg-cyan-400/5 px-2 py-0.5 rounded border border-cyan-500/10"
-                                >
-                                  {t}
-                                </span>
-                              ))}
+                        <Card3D className="glass-panel p-6 rounded-2xl border-white/5 hover:border-white/10 hover:bg-white/[0.02] transition-all duration-300 relative group overflow-hidden">
+                          <div className="absolute top-0 bottom-0 left-0 w-1 bg-gradient-to-b from-purple-500/80 to-cyan-400/80 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          
+                          <div className="flex items-start justify-between gap-4" style={{ transform: 'translateZ(20px)' }}>
+                            <div className="space-y-2.5">
+                              <h3 className="text-lg font-bold text-white tracking-wide group-hover:text-cyan-400 transition-colors">
+                                {proj.title}
+                              </h3>
+                              {/* Tech Badges */}
+                              <div className="flex flex-wrap gap-1.5">
+                                {proj.tech.map((t) => (
+                                  <span
+                                    key={t}
+                                    className="font-mono text-[9px] text-cyan-400/90 bg-cyan-400/5 px-2 py-0.5 rounded border border-cyan-500/10"
+                                  >
+                                    {t}
+                                  </span>
+                                ))}
+                              </div>
+                              <p className="text-xs md:text-sm text-slate-400 font-light leading-relaxed">
+                                {proj.description}
+                              </p>
                             </div>
-                            <p className="text-xs md:text-sm text-slate-400 font-light leading-relaxed">
-                              {proj.description}
-                            </p>
-                          </div>
 
-                          {proj.githubUrl && (
-                            <a
-                              href={proj.githubUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="p-2 text-slate-400 hover:text-white bg-white/5 border border-white/10 rounded-lg hover:scale-105 transition-all"
-                            >
-                              <ExternalLink size={14} />
-                            </a>
-                          )}
-                        </div>
+                            {proj.githubUrl && (
+                              <a
+                                href={proj.githubUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="p-2 text-slate-400 hover:text-white bg-white/5 border border-white/10 rounded-lg hover:scale-105 transition-all"
+                              >
+                                <ExternalLink size={14} />
+                              </a>
+                            )}
+                          </div>
+                        </Card3D>
                       </motion.div>
                     ))}
                   </motion.div>
@@ -291,62 +293,68 @@ export default function Experience() {
             {/* Skills grid list */}
             <div className="space-y-4">
               {SKILL_CATEGORIES.map((cat, idx) => (
-                <div
+                <Card3D
                   key={idx}
                   className="glass-panel p-4 rounded-xl border-white/5 hover:border-white/10 hover:bg-white/[0.01] transition-all duration-300"
                 >
-                  <h3 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 mb-2.5 font-bold">
-                    {cat.title}
-                  </h3>
-                  <div className="flex flex-wrap gap-1.5">
-                    {cat.skills.map((skill) => (
-                      <span
-                        key={skill}
-                        className="font-mono text-[10px] text-slate-300 bg-white/5 border border-white/5 hover:border-white/10 px-2 py-1 rounded-lg transition-colors"
-                      >
-                        {skill}
-                      </span>
-                    ))}
+                  <div style={{ transform: 'translateZ(15px)' }}>
+                    <h3 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 mb-2.5 font-bold">
+                      {cat.title}
+                    </h3>
+                    <div className="flex flex-wrap gap-1.5">
+                      {cat.skills.map((skill) => (
+                        <span
+                          key={skill}
+                          className="font-mono text-[10px] text-slate-300 bg-white/5 border border-white/5 hover:border-white/10 px-2 py-1 rounded-lg transition-colors"
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                </Card3D>
               ))}
             </div>
 
             {/* Languages & Interests */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
               {/* Languages */}
-              <div className="glass-panel p-4 rounded-xl border-white/5">
-                <h3 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 mb-3 flex items-center gap-1.5 font-bold">
-                  <Globe size={12} className="text-cyan-400" />
-                  Languages
-                </h3>
-                <div className="space-y-2 font-mono text-[10px]">
-                  {LANGUAGES.map((lang) => (
-                    <div key={lang.name} className="flex justify-between border-b border-white/[0.03] pb-1">
-                      <span className="text-slate-300">{lang.name}</span>
-                      <span className="text-slate-500">{lang.level}</span>
-                    </div>
-                  ))}
+              <Card3D className="glass-panel p-4 rounded-xl border-white/5">
+                <div style={{ transform: 'translateZ(15px)' }}>
+                  <h3 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 mb-3 flex items-center gap-1.5 font-bold">
+                    <Globe size={12} className="text-cyan-400" />
+                    Languages
+                  </h3>
+                  <div className="space-y-2 font-mono text-[10px]">
+                    {LANGUAGES.map((lang) => (
+                      <div key={lang.name} className="flex justify-between border-b border-white/[0.03] pb-1">
+                        <span className="text-slate-300">{lang.name}</span>
+                        <span className="text-slate-500">{lang.level}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              </Card3D>
 
               {/* Interests */}
-              <div className="glass-panel p-4 rounded-xl border-white/5">
-                <h3 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 mb-3 flex items-center gap-1.5 font-bold">
-                  <Heart size={12} className="text-purple-400" />
-                  Interests
-                </h3>
-                <div className="flex flex-wrap gap-1">
-                  {INTERESTS.map((item) => (
-                    <span
-                      key={item}
-                      className="font-mono text-[9px] text-slate-400 bg-white/5 px-2 py-0.5 rounded"
-                    >
-                      {item}
-                    </span>
-                  ))}
+              <Card3D className="glass-panel p-4 rounded-xl border-white/5">
+                <div style={{ transform: 'translateZ(15px)' }}>
+                  <h3 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 mb-3 flex items-center gap-1.5 font-bold">
+                    <Heart size={12} className="text-purple-400" />
+                    Interests
+                  </h3>
+                  <div className="flex flex-wrap gap-1">
+                    {INTERESTS.map((item) => (
+                      <span
+                        key={item}
+                        className="font-mono text-[9px] text-slate-400 bg-white/5 px-2 py-0.5 rounded"
+                      >
+                        {item}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              </Card3D>
             </div>
 
           </div>
