@@ -106,8 +106,10 @@ const InteractiveScene: React.FC = () => {
         rotationSpeed: 0.15,
       };
     } else if (pathname === '/experience' || pathname === '/certificates') {
-      const xOffset = viewport.width > 7 ? 2.2 : 0;
-      const yOffset = viewport.width > 7 ? 0 : -1.2;
+      // Calculate dynamic offset based on viewport width to avoid clipping at viewport edges
+      const isWide = viewport.width > 5.5;
+      const xOffset = isWide ? viewport.width * 0.22 : 0;
+      const yOffset = isWide ? 0 : -1.1;
       return {
         position: new THREE.Vector3(xOffset, yOffset, -0.5),
         scale: 0.75,
