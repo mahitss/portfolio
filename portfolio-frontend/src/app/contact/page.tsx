@@ -193,7 +193,7 @@ export default function Contact() {
 
                 <Card3D className="glass-panel rounded-xl hover:bg-white/[0.02] border-white/5 hover:border-white/10 transition-all duration-300">
                   <a
-                    href="https://linkedin.com/in/mahit-saxena-74561a377"
+                    href="https://www.linkedin.com/in/mahit-saxena/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center space-x-3 p-4 group"
@@ -205,7 +205,7 @@ export default function Contact() {
                     <div>
                       <p className="font-mono text-[9px] text-slate-500 uppercase tracking-widest">LinkedIn Profile</p>
                       <p className="text-xs text-slate-300 font-mono flex items-center gap-1">
-                        linkedin.com/in/mahit-saxena-74561a377 <ExternalLink size={10} className="text-slate-500" />
+                        linkedin.com/in/mahit-saxena <ExternalLink size={10} className="text-slate-500" />
                       </p>
                     </div>
                   </a>

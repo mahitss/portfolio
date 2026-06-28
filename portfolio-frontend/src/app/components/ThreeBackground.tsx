@@ -26,7 +26,6 @@ const InteractiveScene: React.FC = () => {
     const plane = new Float32Array(particleCount * 3);
 
     for (let i = 0; i < particleCount; i++) {
-      // --- Sphere ---
       const theta = THREE.MathUtils.randFloat(0, Math.PI * 2);
       const phi = Math.acos(THREE.MathUtils.randFloat(-1, 1));
       const distSphere = THREE.MathUtils.randFloat(1.2, 1.8);
@@ -34,7 +33,6 @@ const InteractiveScene: React.FC = () => {
       sphere[i * 3 + 1] = distSphere * Math.sin(phi) * Math.sin(theta);
       sphere[i * 3 + 2] = distSphere * Math.cos(phi);
 
-      // --- Cube ---
       const face = THREE.MathUtils.randInt(1, 6);
       const size = 1.3;
       const r1 = THREE.MathUtils.randFloat(-size, size);
@@ -46,7 +44,6 @@ const InteractiveScene: React.FC = () => {
       else if (face === 5) { cube[i * 3] = r1; cube[i * 3 + 1] = r2; cube[i * 3 + 2] = size; }
       else { cube[i * 3] = r1; cube[i * 3 + 1] = r2; cube[i * 3 + 2] = -size; }
 
-      // --- Torus ---
       const u = THREE.MathUtils.randFloat(0, Math.PI * 2);
       const v = THREE.MathUtils.randFloat(0, Math.PI * 2);
       const R = 1.2;
@@ -55,7 +52,6 @@ const InteractiveScene: React.FC = () => {
       torus[i * 3 + 1] = (R + r * Math.cos(v)) * Math.sin(u);
       torus[i * 3 + 2] = r * Math.sin(v);
 
-      // --- Plane ---
       plane[i * 3] = THREE.MathUtils.randFloat(-1.8, 1.8);
       plane[i * 3 + 1] = THREE.MathUtils.randFloat(-1.8, 1.8);
       plane[i * 3 + 2] = THREE.MathUtils.randFloat(-0.25, 0.25);
@@ -64,12 +60,10 @@ const InteractiveScene: React.FC = () => {
     return { sphere, cube, torus, plane };
   }, []);
 
-  // 2. Buffer to hold the active rendering positions (starts as sphere)
   const currentPositions = useMemo(() => {
     return new Float32Array(geometries.sphere);
   }, [geometries]);
 
-  // Compute color values based on selected theme
   const particleColors = useMemo(() => {
     const colors = new Float32Array(particleCount * 3);
     for (let i = 0; i < particleCount; i++) {

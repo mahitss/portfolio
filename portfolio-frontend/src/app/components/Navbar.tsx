@@ -102,7 +102,7 @@ export const Navbar: React.FC = () => {
               <Github size={12} />
             </a>
             <a
-              href="https://linkedin.com/in/mahit-saxena-74561a377"
+              href="https://www.linkedin.com/in/mahit-saxena/"
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 text-slate-400 hover:text-white transition-colors duration-300"
