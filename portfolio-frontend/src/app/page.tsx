@@ -128,7 +128,7 @@ export default function Home() {
         >
           <div className="flex items-center gap-3 justify-end">
             <div className="hidden md:block h-px w-24 bg-white/40 rotate-[20deg]" />
-            <span className="text-4xl md:text-5xl font-medium tracking-tight text-white font-mono">5+</span>
+            <span className="text-4xl md:text-5xl font-medium tracking-tight text-white font-mono">8+</span>
           </div>
           <span className="text-xs md:text-sm text-white/70 mt-1 text-right font-mono">Production Projects</span>
         </motion.div>
@@ -139,7 +139,7 @@ export default function Home() {
           className="absolute left-6 md:left-20 bottom-20 md:bottom-24 flex flex-col items-start"
         >
           <div className="flex items-center gap-3">
-            <span className="text-4xl md:text-5xl font-medium tracking-tight text-white font-mono">7+</span>
+            <span className="text-4xl md:text-5xl font-medium tracking-tight text-white font-mono">8+</span>
             <div className="hidden md:block h-px w-24 bg-white/40 rotate-[-20deg]" />
           </div>
           <span className="text-xs md:text-sm text-white/70 mt-1 font-mono">Certifications</span>

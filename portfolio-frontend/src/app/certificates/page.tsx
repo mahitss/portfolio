@@ -18,6 +18,14 @@ export interface ICertificate {
 // Local fallback certificates data in case backend server is offline
 const LOCAL_BACKUP_CERTIFICATES: ICertificate[] = [
   {
+    id: 'cert-sre',
+    name: 'Site Reliability Engineering',
+    issuer: 'Simplilearn SkillUp',
+    issueDate: 'Jul 2026',
+    imageUrl: '',
+    verificationUrl: 'https://www.simplilearn.com/skillup-free-online-courses'
+  },
+  {
     id: 'cert-gemini',
     name: 'Gemini for Google Workspace',
     issuer: 'Google',

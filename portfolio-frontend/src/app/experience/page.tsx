@@ -21,6 +21,24 @@ interface EducationItem {
 
 const PROJECTS: ProjectItem[] = [
   {
+    title: 'Croo Agent - Autonomous AI Multi-Agent Platform',
+    tech: ['Next.js', 'TypeScript', 'Node.js', 'Prisma', 'Turbo', 'OpenAI', 'Gemini'],
+    description: 'Autonomous AI multi-agent orchestration platform with DAG-based workflow execution, structured graph node planning, swarm intelligence, and real-time analytics.',
+    githubUrl: 'https://github.com/mahitss/croo-agent'
+  },
+  {
+    title: 'SkylineIQ - Global Flight Tracking Platform',
+    tech: ['FastAPI', 'Node.js', 'Python', 'WebSockets', 'Redis', 'ML / AI', 'TypeScript'],
+    description: 'Enterprise global flight tracking platform ingesting raw transponder streams, decoding CPR coordinates, real-time AI delay forecasting, and live WebSocket map updates.',
+    githubUrl: 'https://github.com/mahitss/Flight-radar'
+  },
+  {
+    title: 'VisionCanvas AI - Spatial Computing Platform',
+    tech: ['Next.js', 'WebGL', 'FastAPI', 'MediaPipe', 'ONNX Runtime', 'Express', 'Socket.io'],
+    description: 'High-frequency spatial computing application for gesture-based drawing, AI OCR handwriting recognition, real-time shape auto-correction, and collaborative canvas streaming.',
+    githubUrl: 'https://github.com/mahitss/Canvas_Air'
+  },
+  {
     title: 'Streamify - OTT Streaming Platform',
     tech: ['Next.js', 'TypeScript', 'Node.js', 'Express', 'MongoDB', 'JWT'],
     description: 'Full-stack OTT platform with JWT authentication, personalized watchlists, advanced search & filter, responsive UI, and scalable REST API backend.',

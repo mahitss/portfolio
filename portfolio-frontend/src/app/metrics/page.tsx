@@ -22,6 +22,7 @@ const MOCK_METRICS_DATA: MetricsData = {
     '/metrics': 12
   },
   certificateClicks: {
+    'cert-sre': 52,
     'cert-gemini': 48,
     'cert-hackathon': 31,
     'cert-ml': 25,
@@ -35,6 +36,7 @@ const MOCK_METRICS_DATA: MetricsData = {
 };
 
 const CERT_NAME_MAP: Record<string, string> = {
+  'cert-sre': 'Site Reliability Engineering (Simplilearn)',
   'cert-gemini': 'Gemini for Google Workspace',
   'cert-hackathon': 'SnowStorm Hackathon Certificate of Excellence',
   'cert-ml': 'Machine Learning Using Python (NPTEL)',
@@ -74,6 +76,7 @@ export default function MetricsDashboard() {
       };
       
       const certificateClicks = {
+        'cert-sre': 0,
         'cert-gemini': 0,
         'cert-hackathon': 0,
         'cert-ml': 0,
