@@ -100,7 +100,7 @@ export default function Certificates() {
   const [playgroundLoading, setPlaygroundLoading] = useState<boolean>(false);
   const [copied, setCopied] = useState<boolean>(false);
 
-  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || (process.env.NODE_ENV === 'production' ? 'https://portfolio-0pga.onrender.com' : 'http://localhost:5000');
 
   const fetchCertificates = useCallback(async () => {
     setLoading(true);

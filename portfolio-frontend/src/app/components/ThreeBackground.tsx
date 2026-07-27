@@ -241,7 +241,7 @@ export const ThreeBackground: React.FC = () => {
   // Record page view on path change
   useEffect(() => {
     const recordPageView = async () => {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || (process.env.NODE_ENV === 'production' ? 'https://portfolio-0pga.onrender.com' : 'http://localhost:5000');
       try {
         await fetch(`${backendUrl}/api/analytics/pageview`, {
           method: 'POST',

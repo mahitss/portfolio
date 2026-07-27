@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 import { verifyCaptcha } from './captchaController';
 import { db } from '../services/dbService';
 
@@ -31,15 +32,53 @@ export const handleContactForm = async (req: Request, res: Response) => {
   }
 
   try {
+    const resendApiKey = process.env.RESEND_API_KEY;
+    const recipientEmail = process.env.RECEIVER_EMAIL || process.env.SMTP_USER || 'mahitsaxena44@gmail.com';
+
+    // 1. Primary: Use Resend API if API Key is configured
+    if (resendApiKey && !resendApiKey.includes('your_resend_api_key')) {
+      console.log('[Contact Controller] Dispatching email via Resend API...');
+      const resend = new Resend(resendApiKey);
+
+      const resendResult = await resend.emails.send({
+        from: 'Portfolio Contact Form <onboarding@resend.dev>',
+        to: [recipientEmail],
+        replyTo: email,
+        subject: `Portfolio Contact Form: Message from ${name}`,
+        text: `You have received a new contact message from your portfolio website:\n\nName: ${name}\nEmail: ${email}\nMessage: ${message}`,
+        html: `<p>You have received a new contact message from your portfolio website:</p>
+               <p><strong>Name:</strong> ${name}</p>
+               <p><strong>Email:</strong> ${email}</p>
+               <p><strong>Message:</strong></p>
+               <blockquote style="border-left: 2px solid #ccc; padding-left: 10px; margin-left: 0;">
+                 ${message.replace(/\n/g, '<br>')}
+               </blockquote>`,
+      });
+
+      if (resendResult.error) {
+        console.error('[Contact Controller] Resend API error:', resendResult.error);
+        throw new Error(resendResult.error.message || 'Resend API Dispatch Failed');
+      }
+
+      await db.incrementMessagesCount();
+
+      return res.status(200).json({
+        message: 'Message sent successfully via Resend!',
+        messageId: resendResult.data?.id,
+      });
+    }
+
+    // 2. Fallback: Use Nodemailer SMTP if Resend is not configured
     let transporter;
 
-    // Check if custom SMTP credentials are provided
     if (
       process.env.SMTP_HOST &&
       process.env.SMTP_USER &&
       process.env.SMTP_PASS
     ) {
-      transporter = nodemailer.createTransport({
+      const isGmail = process.env.SMTP_HOST.includes('gmail') || process.env.SMTP_USER.includes('gmail');
+      
+      const transportConfig: any = {
         host: process.env.SMTP_HOST,
         port: parseInt(process.env.SMTP_PORT || '587'),
         secure: process.env.SMTP_PORT === '465', // true for 465, false for other ports
@@ -47,7 +86,16 @@ export const handleContactForm = async (req: Request, res: Response) => {
           user: process.env.SMTP_USER,
           pass: process.env.SMTP_PASS,
         },
-      });
+        tls: {
+          rejectUnauthorized: false
+        }
+      };
+
+      if (isGmail) {
+        transportConfig.service = 'gmail';
+      }
+
+      transporter = nodemailer.createTransport(transportConfig);
     } else {
       // Fallback: Dynamically generate an Ethereal SMTP test account
       console.log('No SMTP credentials in .env, creating dynamic Ethereal Test Account...');
@@ -64,10 +112,11 @@ export const handleContactForm = async (req: Request, res: Response) => {
     }
 
     const senderEmail = process.env.SMTP_USER || email;
+
     const mailOptions = {
       from: `"${name} (via Portfolio)" <${senderEmail}>`,
       replyTo: email,
-      to: process.env.RECEIVER_EMAIL || 'portfolio-owner@example.com',
+      to: recipientEmail,
       subject: `Portfolio Contact Form: Message from ${name}`,
       text: `You have received a new contact message from your portfolio website:
       
@@ -91,16 +140,16 @@ Message: ${message}`,
     // If using ethereal, output preview URL
     if (!process.env.SMTP_HOST) {
       console.log('Message sent: %s', info.messageId);
-      console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+      console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info as any));
     }
 
     return res.status(200).json({
       message: 'Message sent successfully!',
       messageId: info.messageId,
-      previewUrl: !process.env.SMTP_HOST ? nodemailer.getTestMessageUrl(info) : undefined,
+      previewUrl: !process.env.SMTP_HOST ? nodemailer.getTestMessageUrl(info as any) : undefined,
     });
   } catch (error: any) {
-    console.error('Nodemailer Error:', error);
-    return res.status(500).json({ error: 'Failed to send message. Please try again later.' });
+    console.error('[Contact Controller] Email Error Details:', error.stack || error);
+    return res.status(500).json({ error: `Failed to send message: ${error.message || 'Server Dispatch Error'}` });
   }
 };

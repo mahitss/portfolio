@@ -31,7 +31,7 @@ export default function Contact() {
   const [captchaAnswer, setCaptchaAnswer] = useState<string>('');
   const [captchaLoading, setCaptchaLoading] = useState<boolean>(false);
 
-  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || (process.env.NODE_ENV === 'production' ? 'https://portfolio-0pga.onrender.com' : 'http://localhost:5000');
 
   // Email regex helper
   const isValidEmail = (email: string): boolean => {

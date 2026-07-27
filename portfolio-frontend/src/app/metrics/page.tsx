@@ -54,7 +54,7 @@ export default function MetricsDashboard() {
   const [usingMock, setUsingMock] = useState<boolean>(false);
   const [rawView, setRawView] = useState<boolean>(false);
 
-  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || (process.env.NODE_ENV === 'production' ? 'https://portfolio-0pga.onrender.com' : 'http://localhost:5000');
 
   const fetchMetrics = useCallback(async () => {
     setLoading(true);

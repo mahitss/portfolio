@@ -22,10 +22,14 @@ app.use(helmet({
 }));
 
 // CORS Configuration
-const whitelist = (process.env.CORS_WHITELIST || 'http://localhost:3000').split(',');
+const defaultWhitelist = ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:5173', 'http://127.0.0.1:3000'];
+const whitelist = process.env.CORS_WHITELIST 
+  ? process.env.CORS_WHITELIST.split(',').map(s => s.trim())
+  : defaultWhitelist;
+
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
-    if (!origin || whitelist.includes('*') || whitelist.indexOf(origin) !== -1) {
+    if (!origin || whitelist.includes('*') || whitelist.indexOf(origin) !== -1 || process.env.NODE_ENV !== 'production') {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));

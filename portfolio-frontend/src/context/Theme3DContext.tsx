@@ -36,7 +36,7 @@ export const Theme3DProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const checkApiStatus = async () => {
     setApiStatus('checking');
-    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || (process.env.NODE_ENV === 'production' ? 'https://portfolio-0pga.onrender.com' : 'http://localhost:5000');
     const startTime = Date.now();
     try {
       const res = await fetch(`${backendUrl}/api/health`, { cache: 'no-store' });

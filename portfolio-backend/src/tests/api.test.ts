@@ -1,7 +1,7 @@
 import request from 'supertest';
 import express from 'express';
 
-// 1. Register the Nodemailer mock in Jest's cache first
+// 1. Register Nodemailer and Resend mocks in Jest's cache first
 jest.mock('nodemailer', () => {
   return {
     __esModule: true,
@@ -15,6 +15,19 @@ jest.mock('nodemailer', () => {
       }),
       getTestMessageUrl: () => 'https://ethereal.email/preview/mocked-message-id',
     }
+  };
+});
+
+jest.mock('resend', () => {
+  return {
+    Resend: jest.fn().mockImplementation(() => ({
+      emails: {
+        send: jest.fn().mockResolvedValue({
+          data: { id: 'mocked-resend-id' },
+          error: null,
+        }),
+      },
+    })),
   };
 });
 
